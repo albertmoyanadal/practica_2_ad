@@ -4,3 +4,20 @@ author: "Melcion Ciudad, Miquel Àngel Llauger, Albert Moya"
 format: html
 ---
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library("tidyverse")
+```
+
+## Resum
+
+
+## Plantejament del problema
+
+
+## Anàlisi descriptiu de la base de dades
+
+
+## Respondre preguntes
+
+
+## Conclusions
