@@ -6,7 +6,7 @@ format: html
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
-data <- read_csv(file = "Salut_Vocal_anonimizada.csv")
+data <- read_csv2(file = "Salut_Vocal_anonimizada.csv", )
 ```
 
 ## Resum
@@ -16,6 +16,14 @@ data <- read_csv(file = "Salut_Vocal_anonimizada.csv")
 
 
 ## Anàlisi descriptiu de la base de dades
+
+Feim un petit anàlisi descriptiu de la base de dades:
+
+```{r}
+data
+data %>% glimpse
+```
+
 
 
 ## Respondre preguntes
