@@ -1,17 +1,16 @@
 ---
-title: "Pràctica 2"
-author: "Melcion Ciudad, Miquel Àngel Llauger, Albert Moya"
+title: "part_albert"
+author: "Albert"
 format: html
-editor: 
-  markdown: 
-    wrap: 72
+editor: visual
 ---
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
 data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
 data %>% as.tibble()
-
+data <- data %>%
+  select(-ncol(data))
 ```
 
 ## Resum
@@ -41,14 +40,56 @@ alguna o algunes de les medicacions següents? On les
 -   Danazol 
 -   No
 
+
 ```{r, echo= FALSE}
 names = c()
  for (i in 1:38){
    names = c(names, paste0("col",as.character(i)))
  }
 names(data) = names
-data_2 <- (data %>% select(col1,col25))
-head(data_2)
+
 ```
 
+```{r}
+
+valors_mapping <- c(
+  "Mai" = 0,
+  "Gairebé mai" = 1,
+  "A vegades" = 2,
+  "Gairebé sempre" = 3,
+  "Sempre" = 4
+)
+
+# Reemplaça els valors de les darreres 10 columnes per números segons el mapping
+data <- data %>%
+  mutate(across(tail(names(data), 10), ~ recode(.x, !!!valors_mapping)))
+
+# Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'
+data <- data %>%
+  mutate(qualitat_veu = rowSums(across(tail(names(data), 10)), na.rm = TRUE))
+
+# Mostra el resultat
+print(data)
+```
+```{r}
+library(viridis)
+library(hrbrthemes)
+dat_graf_2 <- data %>% select(col25,qualitat_veu)
+names(dat_graf_2) = c("col25","qualitat_veu")
+dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot() + 
+  scale_fill_viridis(discrete = TRUE, alpha=0.5, option="A")+
+  geom_jitter(color="red",size=0.4,alpha = 0.9)+
+  theme_ipsum()+
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size=10)
+  ) + 
+  ggtitle("PICO")+
+  xlab("");
+
+```
+
+
 ## Conclusions
+
+Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
