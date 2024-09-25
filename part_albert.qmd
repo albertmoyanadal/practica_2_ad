@@ -9,6 +9,9 @@ editor: visual
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
 data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
+data %>% as.tibble()
+data <- data %>%
+  select(-ncol(data))
 ```
 
 ## Resum
@@ -21,19 +24,55 @@ data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
 
 Feim un petit anàlisi descriptiu de la base de dades:
 
-```{r}
-data
-data %>% glimpse
+
+## Respondre preguntes
+
+Per respondre les pregüntes haurem d'analitzar les variables que ens interessin. 
+Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les
+-   Corticosteroides inhalats
+-   Antidepresius (fluooxetina i amitriptilina)
+-   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
+-   Aspirina i antiinnflamatoris no esteroideus
+-   IECA (enalpapril, ramipril, captopril...)
+-   Diurètics (espirolactona, furosemida)
+-   Clorpromazina
+-   L-Dopa
+-   Vitamina C
+-   Danazol
+-   No
+
+```{r, echo= FALSE}
+names = c()
+ for (i in 1:38){
+   names = c(names, paste0("col",as.character(i)))
+ }
+names(data) = names
+data_2 <- (data %>% select(col1,col25))
+head(data_2)
 ```
 
-
-
-## Hi ha alguna medicació que influeixi en la qualitat de la veu?
-
 ```{r}
 
+valors_mapping <- c(
+  "Mai" = 0,
+  "Gairebé mai" = 1,
+  "A vegades" = 2,
+  "Gairebé sempre" = 3,
+  "Sempre" = 4
+)
+
+# Reemplaça els valors de les darreres 10 columnes per números segons el mapping
+data <- data %>%
+  mutate(across(tail(names(data), 10), ~ recode(.x, !!!valors_mapping)))
+
+# Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'
+data <- data %>%
+  mutate(qualitat_veu = rowSums(across(tail(names(data), 10)), na.rm = TRUE))
+
+# Mostra el resultat
+print(data)
 ```
 
-
+  
 
 ## Conclusions
