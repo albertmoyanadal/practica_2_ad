@@ -1,0 +1,34 @@
+---
+title: "part_albert"
+author: "Albert"
+format: html
+editor: visual
+---
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library("tidyverse")
+data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
+```
+
+## Resum
+
+
+## Plantejament del problema
+
+
+## Anàlisi descriptiu de la base de dades
+
+Feim un petit anàlisi descriptiu de la base de dades:
+
+```{r}
+data
+data %>% glimpse
+```
+
+
+
+## Respondre preguntes
+
+
+## Conclusions
