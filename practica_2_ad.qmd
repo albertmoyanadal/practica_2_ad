@@ -19,14 +19,33 @@ data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
 
 Feim un petit anàlisi descriptiu de la base de dades:
 
-```{r}
-data
-data %>% glimpse
-```
-
-
 
 ## Respondre preguntes
+
+Per respondre les pregüntes haurem d'analitzar les variables que ens interessin. 
+Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les
+-   Corticosteroides inhalats
+-   Antidepresius (fluooxetina i amitriptilina)
+-   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
+-   Aspirina i antiinnflamatoris no esteroideus
+-   IECA (enalpapril, ramipril, captopril...)
+-   Diurètics (espirolactona, furosemida)
+-   Clorpromazina
+-   L-Dopa
+-   Vitamina C
+-   Danazol
+-   No
+
+```{r, echo= FALSE}
+names = c()
+ for (i in 1:38){
+   names = c(names, paste0("col",as.character(i)))
+ }
+names(data) = names
+data_2 <- (data %>% select(col1,col25))
+head(data_2)
+```
+
 
 
 ## Conclusions
