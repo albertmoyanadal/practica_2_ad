@@ -28,7 +28,12 @@ data %>% glimpse
 
 
 
-## Respondre preguntes
+## Hi ha alguna medicació que influeixi en la qualitat de la veu?
+
+```{r}
+
+```
+
 
 
 ## Conclusions
