@@ -1,0 +1,6 @@
+---
+title: "Pràctica 2"
+author: "Melcion Ciudad, Miquel Àngel Llauger, Albert Moya"
+format: html
+---
+
