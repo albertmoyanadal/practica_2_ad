@@ -73,6 +73,18 @@ data <- data %>%
 print(data)
 ```
 
-  
+```{r}
+ggplot(data, aes(x = col25, y = col38)) +
+  geom_boxplot(aes(color = col25), width = 0.3, 
+               show.legend = FALSE) + 
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = FALSE, 
+              position = position_jitter(width = 0.2, seed = 0)) +
+  labs(x = "Medicaments", y = "Qualitat de la veu")
+```
+
+
+
+
 
 ## Conclusions
