@@ -2,38 +2,43 @@
 title: "Pràctica 2"
 author: "Melcion Ciudad, Miquel Àngel Llauger, Albert Moya"
 format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
 data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
+data %>% as.tibble()
+
 ```
 
 ## Resum
 
-
 ## Plantejament del problema
-
 
 ## Anàlisi descriptiu de la base de dades
 
 Feim un petit anàlisi descriptiu de la base de dades:
 
-
 ## Respondre preguntes
 
-Per respondre les pregüntes haurem d'analitzar les variables que ens interessin. 
-Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les
+Per respondre les pregüntes haurem d'analitzar les variables que ens
+interessin. Farem un primer anàlisis amb la pregunta número 25: Pren
+alguna o algunes de les medicacions següents? On les
+
 -   Corticosteroides inhalats
--   Antidepresius (fluooxetina i amitriptilina)
+-   Antidepresius (fluooxetina i amitriptilina) 
 -   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
--   Aspirina i antiinnflamatoris no esteroideus
--   IECA (enalpapril, ramipril, captopril...)
--   Diurètics (espirolactona, furosemida)
+-   Aspirina i antiinnflamatoris no esteroideus 
+-   IECA (enalpapril, ramipril,captopril...) 
+-   Diurètics (espirolactona, furosemida) 
 -   Clorpromazina
--   L-Dopa
--   Vitamina C
--   Danazol
+-   L
+-   Dopa
+-   Vitamina C 
+-   Danazol 
 -   No
 
 ```{r, echo= FALSE}
@@ -45,7 +50,5 @@ names(data) = names
 data_2 <- (data %>% select(col1,col25))
 head(data_2)
 ```
-
-
 
 ## Conclusions
