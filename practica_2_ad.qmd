@@ -23,23 +23,20 @@ Feim un petit anàlisi descriptiu de la base de dades:
 
 ## Respondre preguntes
 
-Per respondre les pregüntes haurem d'analitzar les variables que ens
-interessin. Farem un primer anàlisis amb la pregunta número 25: Pren
-alguna o algunes de les medicacions següents? On les
+Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les
 
 -   Corticosteroides inhalats
--   Antidepresius (fluooxetina i amitriptilina) 
+-   Antidepresius (fluooxetina i amitriptilina)
 -   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
--   Aspirina i antiinnflamatoris no esteroideus 
--   IECA (enalpapril, ramipril,captopril...) 
--   Diurètics (espirolactona, furosemida) 
+-   Aspirina i antiinnflamatoris no esteroideus
+-   IECA (enalpapril, ramipril,captopril...)
+-   Diurètics (espirolactona, furosemida)
 -   Clorpromazina
 -   L
 -   Dopa
--   Vitamina C 
--   Danazol 
+-   Vitamina C
+-   Danazol
 -   No
-
 
 ```{r, echo= FALSE}
 names = c()
@@ -71,6 +68,7 @@ data <- data %>%
 # Mostra el resultat
 print(data)
 ```
+
 ```{r}
 library(viridis)
 library(hrbrthemes)
@@ -85,7 +83,6 @@ dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot()
     plot.title = element_text(size=10)
   ) 
 ```
-
 
 ## Conclusions
 
