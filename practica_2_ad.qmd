@@ -83,10 +83,7 @@ dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot()
   theme(
     legend.position = "none",
     plot.title = element_text(size=10)
-  ) + 
-  ggtitle("PICO")+
-  xlab("");
-
+  ) 
 ```
 
 
