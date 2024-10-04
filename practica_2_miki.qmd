@@ -223,10 +223,23 @@ summary(aov(Qualitat~Formació, data=dat_gen))
 
 ```
 Ara sí, veiem com hem trobat un p-valor de 0.00819 per al test de variàncies. Com el p-valor és INFERIOR al llindar estàndard de 0.05, ens podem plantejar de REBUTJAR la hipòtesi nul·la. És a dir, hi ha un factor amb tendència mitjana diferent als altres. El que NO ens diu el test ANOVA és quin parell de grups presenten aquesta disparitat.
+Per a comparar parelles de mitjanes, la teoria diu que aquestes han de seguir una distribució de NORMALITAT. Llavors hem de comprovar aquesta condició i, ho podem fer amb els tests de **KOLMOGOROV-SMIRNOV** o el de ANDERSON-DARLING:
+```{r}
+
+lillie.test(d2)
+ad.test(d2)
+```
+Veiem que ambdós tests donen un p-valor molt per DAMUNT de 0.05, que és el nostre llindar de significació. Llavors hem de rebutjar a priori la idea de que segueixen una distribució normal. 
+No obstant, això, la nostra mostra és de 185 individus, és a dir, és considerada una mostra gran (<30 individus). Aleshores el **Teorema Central del Límit** ens suggereix que, amb mostres d'aquest tamany, la desviació amb respecte la normalitat la podem despreciar. És a dir, podem fer tests per parelles que requereixen la hipòtesi de Normalitat. 
+Farem aleshores un test per parelles de **Holm**:
+
 ```{r}
 
 
+pairwise.t.test(dat_gen$Formació, dat_gen$Qualitat, paired=TRUE) 
+
 ```
+
 ## Conclusions
 
 Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
