@@ -1,27 +1,49 @@
 ---
-title: "Part Miki"
-author: "Miki"
-format: html
-editor: visual
+title: "Pràctica 2: Símptomes vocals en els professors"
+subtitle: "Grup TOJUMO"
+date: today
+format:
+  html:
+    theme: lumen
+    toc: true
+    toc-depth: 3
+Rendering:
+    embed-resources: true
 ---
+
+Enllaç al repositori:
+
+\*\*https://github.com/albertmoyanadal/practica_2_ad.git\*\*:
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(viridis)
 library(hrbrthemes)
-data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
-data %>% as.tibble()
-data <- data %>%
-  select(-ncol(data))
+dat <- read_delim("data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
 ```
 
 ## Resum
 
+El problema general és si la Formació en veu influeix en la percepció de la mateixa. 
+
+A més, nosaltres ens plantegem la pregunta "Afecta el consum de medicaments a la qualitat de veu dels professors?". Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents. 
+
 ## Plantejament del problema
+
+La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "Score" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major 'score', menor qualitat de veu i viceversa. 
 
 ## Anàlisi descriptiu de la base de dades
 
 Feim un petit anàlisi descriptiu de la base de dades:
+Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica.
+Aquí podem visualitzar les dades originals:
+
+```{r}
+head(dat)
+
+```
 
 ## Respondre preguntes
 
@@ -34,22 +56,21 @@ Per respondre les preguntes haurem d'analitzar les variables que ens interessin.
 -   IECA (enalpapril, ramipril,captopril...)
 -   Diurètics (espirolactona, furosemida)
 -   Clorpromazina
--   L
--   Dopa
+-   L-Dopa
 -   Vitamina C
 -   Danazol
 -   No
 
-```{r, echo= FALSE}
+```{r, echo= FALSE,warning=FALSE}
 names = c()
  for (i in 1:38){
    names = c(names, paste0("col",as.character(i)))
  }
-names(data) = names
+names(dat) = names
 
 ```
 
-```{r}
+```{r,echo=FALSE,warning=FALSE}
 
 valors_mapping <- c(
   "Mai" = 0,
@@ -59,32 +80,34 @@ valors_mapping <- c(
   "Sempre" = 4
 )
 
-# Reemplaça els valors de les darreres 10 columnes per números segons el mapping
-data <- data %>%
-  mutate(across(tail(names(data), 10), ~ recode(.x, !!!valors_mapping)))
 
-# Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'
-data <- data %>%
-  mutate(qualitat_veu = rowSums(across(tail(names(data), 10)), na.rm = TRUE))
+dat<-select(dat,1,25,28:37)
+
+dat<-dat %>% mutate(across(tail(names(dat),10),~recode(.x,!!!valors_mapping)))
+
+
+dat <- dat %>%
+  mutate(qualitat_veu = rowSums(across(tail(names(dat), 10)), na.rm = TRUE))
 
 names=c()
 for (i in 1:38){
   names=c(names,paste0("col",as.character(i)))
 }
-names(data)=names
+names(dat)=names
+
 
 # Mostra el resultat
-print(data)
+
 
 ```
 
 És important assenyalar que, d'entre els enquestats, no hi ha CAP consumidor de "Diurètics", "L-Dopa" i de "Danazol". Per tant, aquestes variables no apareixeran en el boxplot que contrasta medicaments i qualitat de veu:
 
-```{r}
+```{r,echo=FALSE,warning=FALSE}
 
-dat_graf_2 <- data %>% select(col25,col38)
+dat_graf_2 <- dat %>% select(col2,col13)
 names(dat_graf_2) = c("col25","qualitat_veu")
-<<<<<<< HEAD
+
 
 
 dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
@@ -106,23 +129,51 @@ dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
 ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=col25),width=0.3)+
   geom_jitter(aes(color = col25), alpha = 0.5, 
               show.legend = TRUE, 
-              position = position_jitter(width = 0.2, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
-  labs(x = "Ha près medicació", y = "Qualitat de la veu")+
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
+  labs(x = "Medicaments", y = "Qualitat de la veu")+
 theme(
     axis.text.x = element_text(size = 6, angle = 45, hjust = 1))
 
-=======
-dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot() + 
-  scale_fill_viridis(discrete = TRUE, alpha=0.5, option="A")+
-  geom_jitter(color="red",size=0.4,alpha = 0.9)+
-  theme_ipsum()+
-  theme(
-    legend.position = "none",
-    plot.title = element_text(size=10)
-  ) 
->>>>>>> 13264a50fce1963f4fe1913b41d4410d2011ed58
+
+
 ```
 
+A partir d'aquí, cal plantejar-se si les diferents mitjanes de qualitat de veu dels diferents factors són significativament diferents. Ens plantegem la hipòtesi nul·la de què totes les mitjanes són iguals, que només podríem rebutjar si trobássim un p-valor del test de Variànces ANOVA inferior al 0.05
+
+```{r}
+
+summary(aov(qualitat_veu~col25, data=dat_graf_2))
+
+
+
+```
+
+Hem obtingut un p-valor del 0.417 i, per tant NO podem rebutjar la hipòtesi nul·la. No podem dir que el conusm d'algun dels medicaments influeixi en la qualitat de la veu més que qualsevol altre. Però sí que podem considerar una agrupació diferent dels factors. A partir d'ara, només compararem els que sí han consumit medicaments amb els que no ho han fet. Passam a tenir dos factors:
+
+```{r}
+
+dat_graf3<-dat_graf_2 %>% mutate(col25=case_when(
+  col25!="No"~"Sí", 
+  TRUE~"No"
+))
+
+ggplot(data=dat_graf3, aes(x = col25,y=qualitat_veu))+geom_violin(aes(color=col25),width=0.3,trim=FALSE)+
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))+geom_boxplot(aes(color=col25),width=0.08)+
+  labs(x = "Prèn medicaments", y = "Score")+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))+scale_color_manual(values=c("#E69F00","#56B4E9"))
+
+```
+A simple vista ja és veu que no hi ha una gran diferència entre les mitjanes d'ambdós factors. Si plantejàssim un ANOVA entre els dos factors amb hipòtesi nul·la la igualtat entre mitjanes, el resultat seria molt clar:
+
+```{r}
+
+summary(aov(qualitat_veu~col25, data=dat_graf3))
+
+```
+Efectivament, amb un p-valor de 0.905 no té gaire sentit rebutjar la hipòtesi nul·la. 
 ## Conclusions
 
 Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
