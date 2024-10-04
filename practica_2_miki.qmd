@@ -1,0 +1,128 @@
+---
+title: "Part Miki"
+author: "Miki"
+format: html
+editor: visual
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(viridis)
+library(hrbrthemes)
+data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
+data %>% as.tibble()
+data <- data %>%
+  select(-ncol(data))
+```
+
+## Resum
+
+## Plantejament del problema
+
+## Anàlisi descriptiu de la base de dades
+
+Feim un petit anàlisi descriptiu de la base de dades:
+
+## Respondre preguntes
+
+Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les possibilitats són:
+
+-   Corticosteroides inhalats
+-   Antidepresius (fluooxetina i amitriptilina)
+-   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
+-   Aspirina i antiinnflamatoris no esteroideus
+-   IECA (enalpapril, ramipril,captopril...)
+-   Diurètics (espirolactona, furosemida)
+-   Clorpromazina
+-   L
+-   Dopa
+-   Vitamina C
+-   Danazol
+-   No
+
+```{r, echo= FALSE}
+names = c()
+ for (i in 1:38){
+   names = c(names, paste0("col",as.character(i)))
+ }
+names(data) = names
+
+```
+
+```{r}
+
+valors_mapping <- c(
+  "Mai" = 0,
+  "Gairebé mai" = 1,
+  "A vegades" = 2,
+  "Gairebé sempre" = 3,
+  "Sempre" = 4
+)
+
+# Reemplaça els valors de les darreres 10 columnes per números segons el mapping
+data <- data %>%
+  mutate(across(tail(names(data), 10), ~ recode(.x, !!!valors_mapping)))
+
+# Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'
+data <- data %>%
+  mutate(qualitat_veu = rowSums(across(tail(names(data), 10)), na.rm = TRUE))
+
+names=c()
+for (i in 1:38){
+  names=c(names,paste0("col",as.character(i)))
+}
+names(data)=names
+
+# Mostra el resultat
+print(data)
+
+```
+
+És important assenyalar que, d'entre els enquestats, no hi ha CAP consumidor de "Diurètics", "L-Dopa" i de "Danazol". Per tant, aquestes variables no apareixeran en el boxplot que contrasta medicaments i qualitat de veu:
+
+```{r}
+
+dat_graf_2 <- data %>% select(col25,col38)
+names(dat_graf_2) = c("col25","qualitat_veu")
+<<<<<<< HEAD
+
+
+dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
+  col25=="Corticosteroides inhalats"~"1",
+  col25=="Antidepressius (fluoxetina i amitriptilina)"~"2",
+  col25=="Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)"~"3",
+  col25=="Aspirina i antiinflamatoris no esteroideus"~"4",
+  col25=="IECA (enalpapril, ramipril, captopril...)"~"5",
+  col25== "Diurètics (espirolactona, furosemida)"~"6",
+  col25=="Clorpromazina"~"7",
+  col25=="L-Dopa"~"8",
+  col25=="Vitamina C"~"9",
+  col25=="Danazol"~"10",
+  col25=="No"~"No",
+  TRUE~"Varis"
+  
+))
+
+ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=col25),width=0.3)+
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.2, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
+  labs(x = "Ha près medicació", y = "Qualitat de la veu")+
+theme(
+    axis.text.x = element_text(size = 6, angle = 45, hjust = 1))
+
+=======
+dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot() + 
+  scale_fill_viridis(discrete = TRUE, alpha=0.5, option="A")+
+  geom_jitter(color="red",size=0.4,alpha = 0.9)+
+  theme_ipsum()+
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size=10)
+  ) 
+>>>>>>> 13264a50fce1963f4fe1913b41d4410d2011ed58
+```
+
+## Conclusions
+
+Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
