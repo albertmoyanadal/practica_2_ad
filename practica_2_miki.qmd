@@ -19,6 +19,7 @@ Enllaç al repositori:
 library(tidyverse)
 library(viridis)
 library(hrbrthemes)
+library(nortest)
 dat <- read_delim("data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
@@ -47,6 +48,7 @@ head(dat)
 
 ## Respondre preguntes
 
+### El consum de medicaments afecta la qualitat de la nostra veu?
 Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les possibilitats són:
 
 -   Corticosteroides inhalats
@@ -132,7 +134,7 @@ ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=co
               position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
   labs(x = "Medicaments", y = "Qualitat de la veu")+
 theme(
-    axis.text.x = element_text(size = 6, angle = 45, hjust = 1))
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 
 
 
@@ -150,7 +152,7 @@ summary(aov(qualitat_veu~col25, data=dat_graf_2))
 
 Hem obtingut un p-valor del 0.417 i, per tant NO podem rebutjar la hipòtesi nul·la. No podem dir que el conusm d'algun dels medicaments influeixi en la qualitat de la veu més que qualsevol altre. Però sí que podem considerar una agrupació diferent dels factors. A partir d'ara, només compararem els que sí han consumit medicaments amb els que no ho han fet. Passam a tenir dos factors:
 
-```{r}
+```{r, echo=FALE,warning=FALSE}
 
 dat_graf3<-dat_graf_2 %>% mutate(col25=case_when(
   col25!="No"~"Sí", 
@@ -174,6 +176,57 @@ summary(aov(qualitat_veu~col25, data=dat_graf3))
 
 ```
 Efectivament, amb un p-valor de 0.905 no té gaire sentit rebutjar la hipòtesi nul·la. 
+
+### Pregunta general: la formació en veu influeix en la percepció de la mateixa?
+
+Aquí considerarem que la percepció de la qualitat de la mateixa ve donada per l'score. I la variable qualitativa "Formació en veu" vendrà donada per la pregunta 24: "Té formació sobre salut vocal?" on les possibles respostes són:
+-
+
+
+```{r,echo=FALSE,warning=FALSE}
+dat <- read_delim("data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+d1 <- dat$`Té formació sobre salut vocal?`
+
+d2 <-dat_graf3$qualitat_veu
+
+dat_gena<-tibble(d1,d2)
+view(dat_gena)
+names(dat_gena)=c("Formació","Qualitat")
+names(dat_gena)
+
+
+dat_gen<-dat_gena %>% mutate(Formació=case_when(
+  Formació=="No, mai he fet cap formació"~"Mai",
+  Formació=="Si, vaig fer un curs fa temps"~"Fa temps",
+  Formació=="He hagut de fer sessions de rehabilitació vocal (logopèdia)"~"Logopeda",
+  Formació=="He fet la formació Com puc cuidar la meva veu impartida pel Servei de Prevenció"~"Formació",
+  Formació=="He fet formació vocal pel meu compte"~"Pel seu Compte",
+  TRUE~"Altres"
+))
+view(dat_gen)
+
+ggplot(data=dat_gen, aes(x =Formació,y=Qualitat))+geom_boxplot(aes(color=Formació),width=0.2)+
+  geom_jitter(aes(color = Formació), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))+
+  labs(x = "Formació", y = "Qualitat de la veu")+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+```
+Feim un ANOVA:
+
+```{r,echo=TRUE}
+summary(aov(Qualitat~Formació, data=dat_gen))
+
+
+```
+Ara sí, veiem com hem trobat un p-valor de 0.00819 per al test de variàncies. Com el p-valor és INFERIOR al llindar estàndard de 0.05, ens podem plantejar de REBUTJAR la hipòtesi nul·la. És a dir, hi ha un factor amb tendència mitjana diferent als altres. El que NO ens diu el test ANOVA és quin parell de grups presenten aquesta disparitat.
+```{r}
+
+
+```
 ## Conclusions
 
 Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
