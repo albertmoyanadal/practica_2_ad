@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Albert">
+<meta name="dcterms.date" content="2024-10-05">
 
-<title>part_albert</title>
+<title>Símptomes vocals en els professors</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -72,28 +72,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#resum" id="toc-resum" class="nav-link active" data-scroll-target="#resum">Resum</a></li>
+  <li><a href="#plantejament-del-problema" id="toc-plantejament-del-problema" class="nav-link" data-scroll-target="#plantejament-del-problema">Plantejament del problema</a></li>
+  <li><a href="#anàlisi-descriptiu-de-la-base-de-dades" id="toc-anàlisi-descriptiu-de-la-base-de-dades" class="nav-link" data-scroll-target="#anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</a></li>
+  <li><a href="#neteja-i-de-les-dades" id="toc-neteja-i-de-les-dades" class="nav-link" data-scroll-target="#neteja-i-de-les-dades">Neteja i de les dades</a></li>
+  <li><a href="#respondre-preguntes" id="toc-respondre-preguntes" class="nav-link" data-scroll-target="#respondre-preguntes">Respondre preguntes</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">part_albert</h1>
+<h1 class="title">Símptomes vocals en els professors</h1>
+<p class="subtitle lead">Estudio a equipo docente sobre la voz</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Albert </p>
-          </div>
-  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 5, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -103,155 +117,97 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 185 × 38
-      ID De l'1 al 10 quina importancia té l…¹ Sexe  `On fa feina?` `Cos docent`
-   &lt;dbl&gt;                                 &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;       
- 1     1                                    10 Feme… Palma, Llucma… Formació Pr…
- 2     2                                    10 Feme… Palma, Llucma… Educació Se…
- 3     3                                    10 Masc… Inca, Sa Pobl… Educació Se…
- 4     4                                    10 Feme… Palma, Llucma… Educació Se…
- 5     5                                    10 Feme… Palma, Llucma… Educació Se…
- 6     6                                    10 Feme… Palma, Llucma… Educació Se…
- 7     7                                     9 Masc… Inca, Sa Pobl… Educació Se…
- 8     8                                     9 Feme… Palma, Llucma… Educació Se…
- 9     9                                    10 Feme… Inca, Sa Pobl… Educació Se…
-10    10                                    10 Feme… Palma, Llucma… Educació Se…
-# ℹ 175 more rows
-# ℹ abbreviated name: ¹​`De l'1 al 10 quina importancia té la veu per a vostè?`
-# ℹ 33 more variables: `Quina edat té?` &lt;chr&gt;,
-#   `Practica esport o fa alguna activitat física?` &lt;chr&gt;,
-#   `De l'1 al 10 quina importancia té la pràctica de l'esport o activitat física per a vostè?` &lt;dbl&gt;,
-#   `Té una bona qualitat del son?` &lt;chr&gt;, `Consumeix cafè?` &lt;chr&gt;,
-#   `Consumeix tabac?` &lt;chr&gt;, `Consumeix alcohol?` &lt;chr&gt;, …</code></pre>
-</div>
-</div>
+<p><strong>Grupo:</strong> TOJUMO</p>
+<p>Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch</p>
+<p><strong>Enlace al repositorio de Git-Hub:</strong> <a href="https://github.com/albertmoyanadal/practica_2_ad">repositorio</a></p>
 <section id="resum" class="level2">
 <h2 class="anchored" data-anchor-id="resum">Resum</h2>
+<p>El problema general és si la Formació en veu influeix en la percepció de la mateixa.</p>
+<p>A més, nosaltres ens plantegem la pregunta “Afecta el consum de medicaments a la qualitat de veu dels professors?”. Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d’entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents.</p>
 </section>
 <section id="plantejament-del-problema" class="level2">
 <h2 class="anchored" data-anchor-id="plantejament-del-problema">Plantejament del problema</h2>
+<p>La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: “Mai”, “Gairebé Mai”, “A vegades,”Gairebé Sempre” i “Sempre”. Ho plantejam de la següent manera. A cadascun d’aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: “Score” que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major ‘score’, menor qualitat de veu i viceversa.</p>
 </section>
 <section id="anàlisi-descriptiu-de-la-base-de-dades" class="level2">
 <h2 class="anchored" data-anchor-id="anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</h2>
-<p>Feim un petit anàlisi descriptiu de la base de dades:</p>
+<p>Feim un petit anàlisi descriptiu de la base de dades: Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l’edat, que és numèrica. Aquí podem visualitzar les dades originals:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 37
+     ID De l'1 al 10 quina importancia té la…¹ Sexe  `On fa feina?` `Cos docent`
+  &lt;dbl&gt;                                  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;       
+1     1                                     10 Feme… Palma, Llucma… Formació Pr…
+2     2                                     10 Feme… Palma, Llucma… Educació Se…
+3     3                                     10 Masc… Inca, Sa Pobl… Educació Se…
+4     4                                     10 Feme… Palma, Llucma… Educació Se…
+5     5                                     10 Feme… Palma, Llucma… Educació Se…
+# ℹ abbreviated name: ¹​`De l'1 al 10 quina importancia té la veu per a vostè?`
+# ℹ 32 more variables: `Quina edat té?` &lt;chr&gt;,
+#   `Practica esport o fa alguna activitat física?` &lt;chr&gt;,
+#   `De l'1 al 10 quina importancia té la pràctica de l'esport o activitat física per a vostè?` &lt;dbl&gt;,
+#   `Té una bona qualitat del son?` &lt;chr&gt;, `Consumeix cafè?` &lt;chr&gt;,
+#   `Consumeix tabac?` &lt;chr&gt;, `Consumeix alcohol?` &lt;chr&gt;,
+#   `Consumeix begudes amb gas?` &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="neteja-i-de-les-dades" class="level2">
+<h2 class="anchored" data-anchor-id="neteja-i-de-les-dades">Neteja i de les dades</h2>
+<p>El primer que feim és modificar els valors mencionats en l’apartat anterior.</p>
+<ol type="1">
+<li>Cambiamos los nombres de las columnas:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>CNam <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">37</span>){</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   CNam <span class="ot">=</span> <span class="fu">c</span>(CNam, <span class="fu">paste0</span>(<span class="st">"col"</span>,<span class="fu">as.character</span>(i)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data) <span class="ot">=</span> CNam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Cambiamos los valores de las columnas 28-37 (ambas incluidas)</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data),<span class="dv">10</span>), <span class="sc">~</span><span class="fu">case_when</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Mai'</span><span class="sc">~</span><span class="dv">0</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Gairebé mai'</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'A vegades'</span><span class="sc">~</span><span class="dv">2</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Gairebé sempre'</span><span class="sc">~</span><span class="dv">3</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Sempre'</span> <span class="sc">~</span><span class="dv">4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Añadimos la columna SCORE:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SCORE =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data),<span class="dv">10</span>)),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="respondre-preguntes" class="level2">
 <h2 class="anchored" data-anchor-id="respondre-preguntes">Respondre preguntes</h2>
-<p>Per respondre les pregüntes haurem d’analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les</p>
-<ul>
-<li>Corticosteroides inhalats</li>
-<li>Antidepresius (fluooxetina i amitriptilina)</li>
-<li>Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)</li>
-<li>Aspirina i antiinnflamatoris no esteroideus</li>
-<li>IECA (enalpapril, ramipril,captopril…)</li>
-<li>Diurètics (espirolactona, furosemida)</li>
-<li>Clorpromazina</li>
-<li>L</li>
-<li>Dopa</li>
-<li>Vitamina C</li>
-<li>Danazol</li>
-<li>No</li>
-</ul>
+<p>Per respondre les preguntes haurem d’analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents?</p>
+<p>Per facilitar el codi canviarem el valor de les posibles respostes:</p>
+<p>.== Corticosteroides inhalats .== Antidepresius (fluooxetina i amitriptilina) - Anticolinérgics (broncodilatadors, antihistamínics, antidepressius) - Aspirina i antiinnflamatoris no esteroideus - IECA (enalpapril, ramipril,captopril…) - Diurètics (espirolactona, furosemida) - Clorpromazina - L - Dopa - Vitamina C - Danazol - No</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The `value` argument of `names&lt;-()` must have the same length as `x` as of
-tibble 3.0.0.</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>valors_mapping <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mai"</span> <span class="ot">=</span> <span class="dv">0</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gairebé mai"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"A vegades"</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gairebé sempre"</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sempre"</span> <span class="ot">=</span> <span class="dv">4</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Reemplaça els valors de les darreres 10 columnes per números segons el mapping</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data), <span class="dv">10</span>), <span class="sc">~</span> <span class="fu">recode</span>(.x, <span class="sc">!!!</span>valors_mapping)))</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">qualitat_veu =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data), <span class="dv">10</span>)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostra el resultat</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 185 × 38
-    col1  col2 col3  col4  col5  col6  col7   col8 col9  col10 col11 col12 col13
-   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
- 1     1    10 Feme… Palm… Form… Entr… Més …    10 Dorm… Diàr… Diar… Ocas… Mai  
- 2     2    10 Feme… Palm… Educ… Entr… Més …    10 Dorm… Ocas… No    Ocas… Ocas…
- 3     3    10 Masc… Inca… Educ… Entr… Més …    10 Em d… Diàr… No    Setm… Diàr…
- 4     4    10 Feme… Palm… Educ… Entr… Meny…     8 Dorm… Diàr… Ante… Setm… Ocas…
- 5     5    10 Feme… Palm… Educ… Entr… No       10 Em d… Diàr… No    Ocas… Ocas…
- 6     6    10 Feme… Palm… Educ… Entr… Més …    10 Dorm… Mai   No    No    Mai  
- 7     7     9 Masc… Inca… Educ… Entr… Més …    10 Em d… Diàr… No    No    Ocas…
- 8     8     9 Feme… Palm… Educ… Entr… Meny…     7 Em d… Mai   No    No    Ocas…
- 9     9    10 Feme… Inca… Educ… Entr… Més …    10 Dorm… Diàr… No    Ocas… Ocas…
-10    10    10 Feme… Palm… Educ… Entr… Més …    10 Em d… Diàr… No    Ocas… Ocas…
-# ℹ 175 more rows
-# ℹ 25 more variables: col14 &lt;dbl&gt;, col15 &lt;chr&gt;, col16 &lt;chr&gt;, col17 &lt;chr&gt;,
-#   col18 &lt;chr&gt;, col19 &lt;chr&gt;, col20 &lt;chr&gt;, col21 &lt;chr&gt;, col22 &lt;chr&gt;,
-#   col23 &lt;chr&gt;, col24 &lt;chr&gt;, col25 &lt;chr&gt;, col26 &lt;chr&gt;, col27 &lt;chr&gt;,
-#   col28 &lt;dbl&gt;, col29 &lt;dbl&gt;, col30 &lt;dbl&gt;, col31 &lt;dbl&gt;, col32 &lt;dbl&gt;,
-#   col33 &lt;dbl&gt;, col34 &lt;dbl&gt;, col35 &lt;dbl&gt;, col36 &lt;dbl&gt;, col37 &lt;dbl&gt;,
-#   qualitat_veu &lt;dbl&gt;</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'viridis' was built under R version 4.3.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: viridisLite</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'viridisLite' was built under R version 4.3.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'hrbrthemes' was built under R version 4.3.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dat_graf_2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">select</span>(col25,qualitat_veu)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dat_graf_2) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"col25"</span>,<span class="st">"qualitat_veu"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>dat_graf_2 <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>col25, <span class="at">y=</span>qualitat_veu, <span class="at">fill=</span>col25)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">option=</span><span class="st">"A"</span>)<span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">color=</span><span class="st">"red"</span>,<span class="at">size=</span><span class="fl">0.4</span>,<span class="at">alpha =</span> <span class="fl">0.9</span>)<span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ipsum</span>()<span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-not found in Windows font database</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-not found in Windows font database</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-font family not found in Windows font database
-
-Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-font family not found in Windows font database
-
-Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-font family not found in Windows font database</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practica_2_ad_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(col25, <span class="sc">~</span><span class="fu">case_when</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'No'</span><span class="sc">~</span> <span class="st">'No'</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Corticosteroides inhalats'</span> <span class="sc">~</span><span class="st">'CortIn'</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Antidepresius (fluooxetina i amitriptilina)'</span> <span class="sc">~</span><span class="st">'AntD'</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)'</span> <span class="sc">~</span> <span class="st">'AntCol'</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Aspirina i antiinnflamatoris no esteroideus'</span> <span class="sc">~</span><span class="st">'AspAntI'</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'IECA (enalpapril, ramipril,captopril...)'</span> <span class="sc">~</span> <span class="st">'IECA'</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Diurètics (espirolactona, furosemida)'</span> <span class="sc">~</span> <span class="st">'Diur'</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Clorpromazina'</span><span class="sc">~</span> <span class="st">'Clor'</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'L'</span> <span class="sc">~</span> <span class="st">'L'</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Dopa'</span> <span class="sc">~</span> <span class="st">'Dopa'</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Vitamina C'</span> <span class="sc">~</span> <span class="st">'C'</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span> <span class="st">'Danazol'</span> <span class="sc">~</span> <span class="st">'Dan'</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusions" class="level2">

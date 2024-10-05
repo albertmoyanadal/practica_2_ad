@@ -1,32 +1,93 @@
 ---
-title: "part_albert"
-author: "Albert"
-format: html
-editor: visual
+title: "Símptomes vocals en els professors"
+subtitle: "Estudio a equipo docente sobre la voz"
+date: today
+format:
+  html:
+    theme: lumen
+    toc: true
+    toc-depth: 3
+Rendering:
+    embed-resources: true
 ---
+
+**Grupo:** TOJUMO
+
+Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch
+
+**Enlace al repositorio de Git-Hub:** [repositorio](https://github.com/albertmoyanadal/practica_2_ad)
+
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
-data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv", )
-data %>% as.tibble()
+data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv" )
 data <- data %>%
   select(-ncol(data))
 ```
 
 ## Resum
 
-## Plantejament del problema
+El problema general és si la Formació en veu influeix en la percepció de la mateixa. 
+
+A més, nosaltres ens plantegem la pregunta "Afecta el consum de medicaments a la qualitat de veu dels professors?". Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents. 
+
+## Plantejament del problema 
+
+La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "Score" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major 'score', menor qualitat de veu i viceversa. 
 
 ## Anàlisi descriptiu de la base de dades
 
 Feim un petit anàlisi descriptiu de la base de dades:
+Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica.
+Aquí podem visualitzar les dades originals:
+
+```{r}
+data %>% head(5)
+```
+
+
+## Neteja i de les dades
+
+El primer que feim és modificar els valors mencionats en l'apartat anterior.
+
+1. Cambiamos los nombres de las columnas:
+```{r}
+CNam = c()
+ for (i in 1:37){
+   CNam = c(CNam, paste0("col",as.character(i)))
+ }
+names(data) = CNam
+
+
+```
+
+2. Cambiamos los valores de las columnas 28-37 (ambas incluidas)
+```{r}
+data <- data %>% 
+  mutate(across(tail(names(data),10), ~case_when(
+    .=='Mai'~0,
+    .=='Gairebé mai' ~1,
+    .=='A vegades'~2,
+    .=='Gairebé sempre'~3,
+    .=='Sempre' ~4)))
+```
+
+3. Añadimos la columna SCORE:
+```{r}
+data <- data %>% 
+  mutate(SCORE = rowSums(across(tail(names(data),10)),
+                         na.rm = TRUE))
+```
+
 
 ## Respondre preguntes
 
-Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les
+Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents? 
 
--   Corticosteroides inhalats
--   Antidepresius (fluooxetina i amitriptilina)
+Per facilitar el codi canviarem el valor de les posibles respostes:
+
+.==  Corticosteroides inhalats
+.==   Antidepresius (fluooxetina i amitriptilina)
 -   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
 -   Aspirina i antiinnflamatoris no esteroideus
 -   IECA (enalpapril, ramipril,captopril...)
@@ -38,51 +99,25 @@ Per respondre les preguntes haurem d'analitzar les variables que ens interessin.
 -   Danazol
 -   No
 
-```{r, echo= FALSE}
-names = c()
- for (i in 1:38){
-   names = c(names, paste0("col",as.character(i)))
- }
-names(data) = names
-
-```
-
 ```{r}
-
-valors_mapping <- c(
-  "Mai" = 0,
-  "Gairebé mai" = 1,
-  "A vegades" = 2,
-  "Gairebé sempre" = 3,
-  "Sempre" = 4
-)
-
-# Reemplaça els valors de les darreres 10 columnes per números segons el mapping
-data <- data %>%
-  mutate(across(tail(names(data), 10), ~ recode(.x, !!!valors_mapping)))
-
-# Suma les darreres 10 columnes i crea una nova columna 'qualitat_veu'
-data <- data %>%
-  mutate(qualitat_veu = rowSums(across(tail(names(data), 10)), na.rm = TRUE))
-
-# Mostra el resultat
-print(data)
+data <- data %>% 
+  mutate(across(col25, ~case_when(
+    .=='No'~ 'No',
+    .=='Corticosteroides inhalats' ~'CortIn',
+    .=='Antidepresius (fluooxetina i amitriptilina)' ~'AntD',
+    .=='Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)' ~ 'AntCol',
+    .=='Aspirina i antiinnflamatoris no esteroideus' ~'AspAntI',
+    .=='IECA (enalpapril, ramipril,captopril...)' ~ 'IECA',
+    .=='Diurètics (espirolactona, furosemida)' ~ 'Diur',
+    .=='Clorpromazina'~ 'Clor',
+    .=='L' ~ 'L',
+    .=='Dopa' ~ 'Dopa',
+    .=='Vitamina C' ~ 'C',
+    .== 'Danazol' ~ 'Dan'))
+  )
 ```
 
-```{r}
-library(viridis)
-library(hrbrthemes)
-dat_graf_2 <- data %>% select(col25,qualitat_veu)
-names(dat_graf_2) = c("col25","qualitat_veu")
-dat_graf_2 %>% ggplot(aes(x=col25, y=qualitat_veu, fill=col25)) + geom_boxplot() + 
-  scale_fill_viridis(discrete = TRUE, alpha=0.5, option="A")+
-  geom_jitter(color="red",size=0.4,alpha = 0.9)+
-  theme_ipsum()+
-  theme(
-    legend.position = "none",
-    plot.title = element_text(size=10)
-  ) 
-```
+
 
 ## Conclusions
 
