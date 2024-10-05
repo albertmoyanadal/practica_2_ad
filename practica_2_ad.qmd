@@ -4,9 +4,10 @@ subtitle: "Estudio a equipo docente sobre la voz"
 date: today
 format:
   html:
-    theme: lumen
+    theme: darkly
     toc: true
-    toc-depth: 3
+    toc-depth: 10
+    highlight-style: zenburn
 Rendering:
     embed-resources: true
 ---
@@ -86,39 +87,71 @@ Per respondre les preguntes haurem d'analitzar les variables que ens interessin.
 
 Per facilitar el codi canviarem el valor de les posibles respostes:
 
-.==  Corticosteroides inhalats
-.==   Antidepresius (fluooxetina i amitriptilina)
--   Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)
--   Aspirina i antiinnflamatoris no esteroideus
--   IECA (enalpapril, ramipril,captopril...)
--   Diurètics (espirolactona, furosemida)
--   Clorpromazina
--   L
--   Dopa
--   Vitamina C
--   Danazol
--   No
+Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas
+```{r}
+sub_data <- data %>% select(col1,col25,SCORE)
+sub_data %>% head(10)
+```
+Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:
 
 ```{r}
-data <- data %>% 
-  mutate(across(col25, ~case_when(
-    .=='No'~ 'No',
-    .=='Corticosteroides inhalats' ~'CortIn',
-    .=='Antidepresius (fluooxetina i amitriptilina)' ~'AntD',
-    .=='Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)' ~ 'AntCol',
-    .=='Aspirina i antiinnflamatoris no esteroideus' ~'AspAntI',
-    .=='IECA (enalpapril, ramipril,captopril...)' ~ 'IECA',
-    .=='Diurètics (espirolactona, furosemida)' ~ 'Diur',
-    .=='Clorpromazina'~ 'Clor',
-    .=='L' ~ 'L',
-    .=='Dopa' ~ 'Dopa',
-    .=='Vitamina C' ~ 'C',
-    .== 'Danazol' ~ 'Dan'))
-  )
+# Cram un subdata amb la funcio str_count() 
+  
+sub_data2 <- sub_data %>% mutate(
+  No = str_count(sub_data$col25,pattern = 'No'),
+  CortIn = str_count(sub_data$col25,pattern = 'Corticosteroides inhalats'),
+  AntD = str_count(sub_data$col25,pattern = 'Antidepresius'),
+  AntCol = str_count(sub_data$col25, pattern = 'Anticolinérgics'),
+  AspAntI = str_count(sub_data$col25, pattern = 'Aspirina'),
+  IECA = str_count(sub_data$col25, pattern = 'IECA'),
+  Diur = str_count(sub_data$col25, pattern = 'Diurètics'),
+  Clor = str_count(sub_data$col25, pattern = 'Clorpromazina'),
+  LD = str_count(sub_data$col25,pattern = 'L-Dopa'),
+  C = str_count(sub_data$col25, pattern = 'Vitamina C'),
+  Dan = str_count(sub_data$col25, pattern = 'Danazol'),
+  .before = SCORE
+)
+
 ```
+
+```{r, echo=FALSE}
+# Cream el mateix subdata amb la funció str_detect()
+sub_data3 <- sub_data %>% mutate(
+  
+  No = if_else(str_detect(sub_data$col25,pattern = 'No'),'No','Si'),
+  CortIn = if_else(str_detect(sub_data$col25,pattern = 'Corticosteroides inhalats'),'Cort','No'),
+  AntD = if_else(str_detect(sub_data$col25,pattern = 'Antidepresius'),'AntD','No'),
+  AntCol = if_else(str_detect(sub_data$col25, pattern = 'Anticolinérgics'),'AntCol','No'),
+  AspAntI = if_else(str_detect(sub_data$col25, pattern = 'Aspirina'),'AspAntI','No'),
+  IECA = if_else(str_detect(sub_data$col25, pattern = 'IECA'),'IECA','No'),
+  Diur = if_else(str_detect(sub_data$col25, pattern = 'Diurètics'),'Diur','No'),
+  Clor = if_else(str_detect(sub_data$col25, pattern = 'Clorpromazina'),'Clor','No'),
+  LD = if_else(str_detect(sub_data$col25,pattern = 'L-Dopa'),'L-Dopa','No'),
+  C = if_else(str_detect(sub_data$col25, pattern = 'Vitamina C'),'C','No'),
+  Dan = if_else(str_detect(sub_data$col25, pattern = 'Danazol'),'Dan','No'),
+  .before = SCORE
+  )
+
+
+```
+
+Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d'un medicament.
+
+Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.
+
+```{r}
+data_graf <- sub_data3 %>% select(3:14)
+
+for(i in 2:11){
+  
+}
+```
+
+
+
 
 
 
 ## Conclusions
 
-Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.
+

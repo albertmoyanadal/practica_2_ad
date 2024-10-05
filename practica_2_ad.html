@@ -64,10 +64,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="practica_2_ad_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="practica_2_ad_files/libs/quarto-html/anchor.min.js"></script>
 <link href="practica_2_ad_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="practica_2_ad_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="practica_2_ad_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="practica_2_ad_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="practica_2_ad_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="practica_2_ad_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="practica_2_ad_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 
 
 </head>
@@ -191,28 +191,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="respondre-preguntes">Respondre preguntes</h2>
 <p>Per respondre les preguntes haurem d’analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents?</p>
 <p>Per facilitar el codi canviarem el valor de les posibles respostes:</p>
-<p>.== Corticosteroides inhalats .== Antidepresius (fluooxetina i amitriptilina) - Anticolinérgics (broncodilatadors, antihistamínics, antidepressius) - Aspirina i antiinnflamatoris no esteroideus - IECA (enalpapril, ramipril,captopril…) - Diurètics (espirolactona, furosemida) - Clorpromazina - L - Dopa - Vitamina C - Danazol - No</p>
+<p>Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(col25, <span class="sc">~</span><span class="fu">case_when</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'No'</span><span class="sc">~</span> <span class="st">'No'</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Corticosteroides inhalats'</span> <span class="sc">~</span><span class="st">'CortIn'</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Antidepresius (fluooxetina i amitriptilina)'</span> <span class="sc">~</span><span class="st">'AntD'</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)'</span> <span class="sc">~</span> <span class="st">'AntCol'</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Aspirina i antiinnflamatoris no esteroideus'</span> <span class="sc">~</span><span class="st">'AspAntI'</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'IECA (enalpapril, ramipril,captopril...)'</span> <span class="sc">~</span> <span class="st">'IECA'</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Diurètics (espirolactona, furosemida)'</span> <span class="sc">~</span> <span class="st">'Diur'</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Clorpromazina'</span><span class="sc">~</span> <span class="st">'Clor'</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'L'</span> <span class="sc">~</span> <span class="st">'L'</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Dopa'</span> <span class="sc">~</span> <span class="st">'Dopa'</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Vitamina C'</span> <span class="sc">~</span> <span class="st">'C'</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span> <span class="st">'Danazol'</span> <span class="sc">~</span> <span class="st">'Dan'</span>))</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sub_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">select</span>(col1,col25,SCORE)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sub_data <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+    col1 col25                                                             SCORE
+   &lt;dbl&gt; &lt;chr&gt;                                                             &lt;dbl&gt;
+ 1     1 Aspirina i antiinflamatoris no esteroideus                            0
+ 2     2 No                                                                    8
+ 3     3 Vitamina C                                                            6
+ 4     4 Antidepressius (fluoxetina i amitriptilina)                           8
+ 5     5 Corticosteroides inhalats, Anticolinérgics (broncodilatadors, an…    27
+ 6     6 No                                                                   15
+ 7     7 No                                                                   14
+ 8     8 No                                                                    4
+ 9     9 No                                                                   10
+10    10 No                                                                    7</code></pre>
+</div>
+</div>
+<p>Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cram un subdata amb la funcio str_count() </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sub_data2 <span class="ot">&lt;-</span> sub_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">No =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'No'</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">CortIn =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'Corticosteroides inhalats'</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">AntD =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'Antidepresius'</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">AntCol =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Anticolinérgics'</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">AspAntI =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Aspirina'</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">IECA =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'IECA'</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Diur =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Diurètics'</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Clor =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Clorpromazina'</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">LD =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'L-Dopa'</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Vitamina C'</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dan =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Danazol'</span>),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> SCORE</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d’un medicament.</p>
+<p>Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_graf <span class="ot">&lt;-</span> sub_data3 <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>){</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
-<p>Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.</p>
 </section>
 
 </main>
