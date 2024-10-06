@@ -138,18 +138,52 @@ sub_data3 <- sub_data %>% mutate(
 Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d'un medicament.
 
 Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.
+```{r}
+dat_si_no <- sub_data3 %>% select(No,SCORE)
+names(dat_si_no) <- c('Pren_algun_medicament', 'Qualitat')
+
+
+ggplot(data=dat_si_no, aes(x = Pren_algun_medicament,y=Qualitat))+geom_boxplot(aes(color=Pren_algun_medicament),width=0.3)+
+  geom_jitter(aes(color = Pren_algun_medicament), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("No","Si"))+
+  labs(x = "Medicaments", y = "Qualitat de la veu")+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+
+```
+Podem observar que els dos boxplot es superposen i tenen mitja igual, a més de que tenim molt poques observacions a pren algun medicament (manco de 40):
 
 ```{r}
-data_graf <- sub_data3 %>% select(3:14)
+length(dat_si_no %>% select(Pren_algun_medicament) %>% filter(Pren_algun_medicament =='Si') %>% .$Pren_algun_medicament)
+```
+Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.
 
-for(i in 2:11){
-  
+
+```{r}
+dat_graf_2 <- tibble(
+  Medicament = c(),
+  Qualitat_veu = c()
+)
+Nobres <- sub_data3 %>% select(4:13) %>% names()
+for (i in 1:10){
+  D <- sub_data3[c(Nobres[i], 'SCORE')]
+  names(D) <- c('Medicament','Qualitat_veu')
+  D <- D %>% filter(Medicament != 'No')
+  dat_graf_2 <- rbind(dat_graf_2,D)
 }
+
 ```
 
 
+Graficam la mitja de el SCORE en funció del medicament que pren
+```{r}
+ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(color=Medicament),width=0.3)+
+  geom_jitter(aes(color = Medicament), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))
 
-
+```
 
 
 ## Conclusions
