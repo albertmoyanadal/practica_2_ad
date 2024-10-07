@@ -18,7 +18,6 @@ Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch
 
 **Enlace al repositorio de Git-Hub:** [repositorio](https://github.com/albertmoyanadal/practica_2_ad)
 
-
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library("tidyverse")
 data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv" )
@@ -28,30 +27,28 @@ data <- data %>%
 
 ## Resum
 
-El problema general és si la Formació en veu influeix en la percepció de la mateixa. 
+El problema general és si la Formació en veu influeix en la percepció de la mateixa.
 
-A més, nosaltres ens plantegem la pregunta "Afecta el consum de medicaments a la qualitat de veu dels professors?". Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents. 
+A més, nosaltres ens plantegem la pregunta "Afecta el consum de medicaments a la qualitat de veu dels professors?". Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents.
 
-## Plantejament del problema 
+## Plantejament del problema
 
-La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "Score" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major 'score', menor qualitat de veu i viceversa. 
+La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "Score" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major 'score', menor qualitat de veu i viceversa.
 
 ## Anàlisi descriptiu de la base de dades
 
-Feim un petit anàlisi descriptiu de la base de dades:
-Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica.
-Aquí podem visualitzar les dades originals:
+Feim un petit anàlisi descriptiu de la base de dades: Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica. Aquí podem visualitzar les dades originals:
 
 ```{r}
 data %>% head(5)
 ```
 
-
 ## Neteja i de les dades
 
 El primer que feim és modificar els valors mencionats en l'apartat anterior.
 
-1. Cambiamos los nombres de las columnas:
+1.  Cambiamos los nombres de las columnas:
+
 ```{r}
 CNam = c()
  for (i in 1:37){
@@ -62,7 +59,8 @@ names(data) = CNam
 
 ```
 
-2. Cambiamos los valores de las columnas 28-37 (ambas incluidas)
+2.  Cambiamos los valores de las columnas 28-37 (ambas incluidas)
+
 ```{r}
 data <- data %>% 
   mutate(across(tail(names(data),10), ~case_when(
@@ -73,25 +71,27 @@ data <- data %>%
     .=='Sempre' ~4)))
 ```
 
-3. Añadimos la columna SCORE:
+3.  Añadimos la columna SCORE:
+
 ```{r}
 data <- data %>% 
   mutate(SCORE = rowSums(across(tail(names(data),10)),
                          na.rm = TRUE))
 ```
 
-
 ## Respondre preguntes
 
-Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents? 
+Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents?
 
 Per facilitar el codi canviarem el valor de les posibles respostes:
 
 Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas
+
 ```{r}
 sub_data <- data %>% select(col1,col25,SCORE)
 sub_data %>% head(10)
 ```
+
 Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:
 
 ```{r}
@@ -138,6 +138,7 @@ sub_data3 <- sub_data %>% mutate(
 Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d'un medicament.
 
 Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.
+
 ```{r}
 dat_si_no <- sub_data3 %>% select(No,SCORE)
 names(dat_si_no) <- c('Pren_algun_medicament', 'Qualitat')
@@ -152,13 +153,14 @@ theme(
     axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 
 ```
+
 Podem observar que els dos boxplot es superposen i tenen mitja igual, a més de que tenim molt poques observacions a pren algun medicament (manco de 40):
 
 ```{r}
 length(dat_si_no %>% select(Pren_algun_medicament) %>% filter(Pren_algun_medicament =='Si') %>% .$Pren_algun_medicament)
 ```
-Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.
 
+Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.
 
 ```{r}
 dat_graf_2 <- tibble(
@@ -175,8 +177,8 @@ for (i in 1:10){
 
 ```
 
+Graficam la mitjana del SCORE en funció del medicament que prèn:
 
-Graficam la mitja de el SCORE en funció del medicament que pren
 ```{r}
 ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(color=Medicament),width=0.3)+
   geom_jitter(aes(color = Medicament), alpha = 0.5, 
@@ -184,8 +186,11 @@ ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(col
               position = position_jitter(width = 0.3, seed = 0))
 
 ```
-
-
+Seria lògic demanar-se si podem inferir qualque cosa a partir d'aquest gràfic. És a dir, si un dels medicaments dona uns resultats més o menys elevats que la resta. Això ho podem fer amb un test de variàncies ANOVA: 
+```{r,echo=FALSE}
+dat_graf_2<-na.omit(dat_graf_2)
+summary(dat_graf_2$Medicament)
+summary(aov(Qualitat_veu~Medicament, dat_graf_2))
+```
+Però, amb un p-valor de 0.182, tenim que no podem treure conclusions a partir d'aquí. 
 ## Conclusions
-
-
