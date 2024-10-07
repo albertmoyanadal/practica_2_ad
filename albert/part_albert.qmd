@@ -1,0 +1,197 @@
+---
+title: "Símptomes vocals en els professors"
+subtitle: "Estudio a equipo docente sobre la voz"
+date: today
+format:
+  html:
+    theme: darkly
+    toc: true
+    toc-depth: 10
+    highlight-style: zenburn
+Rendering:
+    embed-resources: true
+---
+
+**Grupo:** TOJUMO
+
+Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch
+
+**Enlace al repositorio de Git-Hub:** [repositorio](https://github.com/albertmoyanadal/practica_2_ad)
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Llibreries
+library("tidyverse")
+
+
+# Dades
+data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv" )
+data <- data %>%
+  select(-ncol(data))
+```
+
+
+## Resum
+
+El problema general és si la formació en veu influeix en la percepció de la mateixa. 
+
+A més, nosaltres ens plantegem la pregunta *"Afecta el consum de medicaments a la qualitat de veu dels professors?"*. Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc **NO** hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents. 
+
+
+## Plantejament del problema 
+
+La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "**Score**" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major "score", menor qualitat de veu i viceversa. 
+
+## Anàlisi descriptiu de la base de dades
+
+Feim un petit anàlisi descriptiu de la base de dades:
+Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica.
+Aquí podem visualitzar les dades originals:
+
+```{r}
+data %>% head(5)
+```
+
+
+## Neteja i de les dades
+
+El primer que feim és modificar els valors mencionats en l'apartat anterior.
+
+1. Cambiamos los nombres de las columnas:
+```{r}
+CNam = c()
+ for (i in 1:37){
+   CNam = c(CNam, paste0("col",as.character(i)))
+ }
+names(data) = CNam
+
+
+```
+
+2. Cambiamos los valores de las columnas 28-37 (ambas incluidas)
+```{r}
+data <- data %>% 
+  mutate(across(tail(names(data),10), ~case_when(
+    .=='Mai'~0,
+    .=='Gairebé mai' ~1,
+    .=='A vegades'~2,
+    .=='Gairebé sempre'~3,
+    .=='Sempre' ~4)))
+```
+
+3. Añadimos la columna SCORE:
+```{r}
+data <- data %>% 
+  mutate(SCORE = rowSums(across(tail(names(data),10)),
+                         na.rm = TRUE))
+```
+
+
+## Respondre preguntes
+
+Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents? 
+
+Per facilitar el codi canviarem el valor de les posibles respostes:
+
+Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas
+```{r}
+sub_data <- data %>% select(col1,col25,SCORE)
+sub_data %>% head(10)
+```
+Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:
+
+```{r}
+# Cram un subdata amb la funcio str_count() 
+  
+sub_data2 <- sub_data %>% mutate(
+  No = str_count(sub_data$col25,pattern = 'No'),
+  CortIn = str_count(sub_data$col25,pattern = 'Corticosteroides inhalats'),
+  AntD = str_count(sub_data$col25,pattern = 'Antidepresius'),
+  AntCol = str_count(sub_data$col25, pattern = 'Anticolinérgics'),
+  AspAntI = str_count(sub_data$col25, pattern = 'Aspirina'),
+  IECA = str_count(sub_data$col25, pattern = 'IECA'),
+  Diur = str_count(sub_data$col25, pattern = 'Diurètics'),
+  Clor = str_count(sub_data$col25, pattern = 'Clorpromazina'),
+  LD = str_count(sub_data$col25,pattern = 'L-Dopa'),
+  C = str_count(sub_data$col25, pattern = 'Vitamina C'),
+  Dan = str_count(sub_data$col25, pattern = 'Danazol'),
+  .before = SCORE
+)
+
+```
+
+```{r, echo=FALSE}
+# Cream el mateix subdata amb la funció str_detect()
+sub_data3 <- sub_data %>% mutate(
+  
+  No = if_else(str_detect(sub_data$col25,pattern = 'No'),'No','Si'),
+  CortIn = if_else(str_detect(sub_data$col25,pattern = 'Corticosteroides inhalats'),'Cort','No'),
+  AntD = if_else(str_detect(sub_data$col25,pattern = 'Antidepresius'),'AntD','No'),
+  AntCol = if_else(str_detect(sub_data$col25, pattern = 'Anticolinérgics'),'AntCol','No'),
+  AspAntI = if_else(str_detect(sub_data$col25, pattern = 'Aspirina'),'AspAntI','No'),
+  IECA = if_else(str_detect(sub_data$col25, pattern = 'IECA'),'IECA','No'),
+  Diur = if_else(str_detect(sub_data$col25, pattern = 'Diurètics'),'Diur','No'),
+  Clor = if_else(str_detect(sub_data$col25, pattern = 'Clorpromazina'),'Clor','No'),
+  LD = if_else(str_detect(sub_data$col25,pattern = 'L-Dopa'),'L-Dopa','No'),
+  C = if_else(str_detect(sub_data$col25, pattern = 'Vitamina C'),'C','No'),
+  Dan = if_else(str_detect(sub_data$col25, pattern = 'Danazol'),'Dan','No'),
+  .before = SCORE
+  )
+
+
+```
+
+Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d'un medicament.
+
+Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.
+```{r}
+dat_si_no <- sub_data3 %>% select(No,SCORE)
+names(dat_si_no) <- c('Pren_algun_medicament', 'Qualitat')
+
+
+ggplot(data=dat_si_no, aes(x = Pren_algun_medicament,y=Qualitat))+geom_boxplot(aes(color=Pren_algun_medicament),width=0.3)+
+  geom_jitter(aes(color = Pren_algun_medicament), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("No","Si"))+
+  labs(x = "Medicaments", y = "Qualitat de la veu")+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+
+```
+Podem observar que els dos boxplot es superposen i tenen mitja igual, a més de que tenim molt poques observacions a pren algun medicament (manco de 40):
+
+```{r}
+length(dat_si_no %>% select(Pren_algun_medicament) %>% filter(Pren_algun_medicament =='Si') %>% .$Pren_algun_medicament)
+```
+Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.
+
+
+```{r}
+dat_graf_2 <- tibble(
+  Medicament = c(),
+  Qualitat_veu = c()
+)
+Nobres <- sub_data3 %>% select(4:13) %>% names()
+for (i in 1:10){
+  D <- sub_data3[c(Nobres[i], 'SCORE')]
+  names(D) <- c('Medicament','Qualitat_veu')
+  D <- D %>% filter(Medicament != 'No')
+  dat_graf_2 <- rbind(dat_graf_2,D)
+}
+
+```
+
+
+Graficam la mitja de el SCORE en funció del medicament que pren
+```{r}
+ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(color=Medicament),width=0.3)+
+  geom_jitter(aes(color = Medicament), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0))
+
+```
+
+
+## Conclusions
+
+
