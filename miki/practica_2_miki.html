@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-10-04">
+<meta name="dcterms.date" content="2024-10-07">
 
 <title>Pràctica 2: Símptomes vocals en els professors</title>
 <style>
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +83,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#resum" id="toc-resum" class="nav-link active" data-scroll-target="#resum">Resum</a></li>
   <li><a href="#plantejament-del-problema" id="toc-plantejament-del-problema" class="nav-link" data-scroll-target="#plantejament-del-problema">Plantejament del problema</a></li>
   <li><a href="#anàlisi-descriptiu-de-la-base-de-dades" id="toc-anàlisi-descriptiu-de-la-base-de-dades" class="nav-link" data-scroll-target="#anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</a></li>
-  <li><a href="#respondre-preguntes" id="toc-respondre-preguntes" class="nav-link" data-scroll-target="#respondre-preguntes">Respondre preguntes</a></li>
+  <li><a href="#respondre-preguntes" id="toc-respondre-preguntes" class="nav-link" data-scroll-target="#respondre-preguntes">Respondre preguntes</a>
+  <ul class="collapse">
+  <li><a href="#el-consum-de-medicaments-afecta-la-qualitat-de-la-nostra-veu" id="toc-el-consum-de-medicaments-afecta-la-qualitat-de-la-nostra-veu" class="nav-link" data-scroll-target="#el-consum-de-medicaments-afecta-la-qualitat-de-la-nostra-veu">El consum de medicaments afecta la qualitat de la nostra veu?</a></li>
+  <li><a href="#pregunta-general-la-formació-en-veu-influeix-en-la-percepció-de-la-mateixa" id="toc-pregunta-general-la-formació-en-veu-influeix-en-la-percepció-de-la-mateixa" class="nav-link" data-scroll-target="#pregunta-general-la-formació-en-veu-influeix-en-la-percepció-de-la-mateixa">Pregunta general: la formació en veu influeix en la percepció de la mateixa?</a></li>
+  </ul></li>
+  <li><a href="#aquí-considerarem-que-la-percepció-de-la-qualitat-de-la-mateixa-ve-donada-per-lscore.-i-la-variable-qualitativa-formació-en-veu-vendrà-donada-per-la-pregunta-24-té-formació-sobre-salut-vocal-on-les-possibles-respostes-són" id="toc-aquí-considerarem-que-la-percepció-de-la-qualitat-de-la-mateixa-ve-donada-per-lscore.-i-la-variable-qualitativa-formació-en-veu-vendrà-donada-per-la-pregunta-24-té-formació-sobre-salut-vocal-on-les-possibles-respostes-són" class="nav-link" data-scroll-target="#aquí-considerarem-que-la-percepció-de-la-qualitat-de-la-mateixa-ve-donada-per-lscore.-i-la-variable-qualitativa-formació-en-veu-vendrà-donada-per-la-pregunta-24-té-formació-sobre-salut-vocal-on-les-possibles-respostes-són">Aquí considerarem que la percepció de la qualitat de la mateixa ve donada per l’score. I la variable qualitativa “Formació en veu” vendrà donada per la pregunta 24: “Té formació sobre salut vocal?” on les possibles respostes són:</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
 </div>
@@ -103,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 4, 2024</p>
+      <p class="date">October 7, 2024</p>
     </div>
   </div>
   
@@ -153,6 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="respondre-preguntes" class="level2">
 <h2 class="anchored" data-anchor-id="respondre-preguntes">Respondre preguntes</h2>
+<section id="el-consum-de-medicaments-afecta-la-qualitat-de-la-nostra-veu" class="level3">
+<h3 class="anchored" data-anchor-id="el-consum-de-medicaments-afecta-la-qualitat-de-la-nostra-veu">El consum de medicaments afecta la qualitat de la nostra veu?</h3>
 <p>Per respondre les preguntes haurem d’analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25: Pren alguna o algunes de les medicacions següents? On les possibilitats són:</p>
 <ul>
 <li>Corticosteroides inhalats</li>
@@ -188,18 +196,6 @@ Residuals   177   7467   42.19               </code></pre>
 </div>
 <p>Hem obtingut un p-valor del 0.417 i, per tant NO podem rebutjar la hipòtesi nul·la. No podem dir que el conusm d’algun dels medicaments influeixi en la qualitat de la veu més que qualsevol altre. Però sí que podem considerar una agrupació diferent dels factors. A partir d’ara, només compararem els que sí han consumit medicaments amb els que no ho han fet. Passam a tenir dos factors:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dat_graf3<span class="ot">&lt;-</span>dat_graf_2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">col25=</span><span class="fu">case_when</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  col25<span class="sc">!=</span><span class="st">"No"</span><span class="sc">~</span><span class="st">"Sí"</span>, </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span><span class="sc">~</span><span class="st">"No"</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_graf3, <span class="fu">aes</span>(<span class="at">x =</span> col25,<span class="at">y=</span>qualitat_veu))<span class="sc">+</span><span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">color=</span>col25),<span class="at">width=</span><span class="fl">0.3</span>,<span class="at">trim=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> col25), <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">show.legend =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">seed =</span> <span class="dv">0</span>))<span class="sc">+</span><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>col25),<span class="at">width=</span><span class="fl">0.08</span>)<span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prèn medicaments"</span>, <span class="at">y =</span> <span class="st">"Score"</span>)<span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))<span class="sc">+</span><span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#E69F00"</span>,<span class="st">"#56B4E9"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -210,14 +206,82 @@ Residuals   177   7467   42.19               </code></pre>
 </div>
 <p>A simple vista ja és veu que no hi ha una gran diferència entre les mitjanes d’ambdós factors. Si plantejàssim un ANOVA entre els dos factors amb hipòtesi nul·la la igualtat entre mitjanes, el resultat seria molt clar:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(qualitat_veu<span class="sc">~</span>col25, <span class="at">data=</span>dat_graf3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(qualitat_veu<span class="sc">~</span>col25, <span class="at">data=</span>dat_graf3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             Df Sum Sq Mean Sq F value Pr(&gt;F)
 col25         1      1    0.60   0.014  0.905
 Residuals   183   7768   42.45               </code></pre>
 </div>
 </div>
-<p>Efectivament, amb un p-valor de 0.905 no té gaire sentit rebutjar la hipòtesi nul·la. ## Conclusions</p>
+<p>Efectivament, amb un p-valor de 0.905 no té gaire sentit rebutjar la hipòtesi nul·la.</p>
+</section>
+<section id="pregunta-general-la-formació-en-veu-influeix-en-la-percepció-de-la-mateixa" class="level3">
+<h3 class="anchored" data-anchor-id="pregunta-general-la-formació-en-veu-influeix-en-la-percepció-de-la-mateixa">Pregunta general: la formació en veu influeix en la percepció de la mateixa?</h3>
+</section>
+</section>
+<section id="aquí-considerarem-que-la-percepció-de-la-qualitat-de-la-mateixa-ve-donada-per-lscore.-i-la-variable-qualitativa-formació-en-veu-vendrà-donada-per-la-pregunta-24-té-formació-sobre-salut-vocal-on-les-possibles-respostes-són" class="level2">
+<h2 class="anchored" data-anchor-id="aquí-considerarem-que-la-percepció-de-la-qualitat-de-la-mateixa-ve-donada-per-lscore.-i-la-variable-qualitativa-formació-en-veu-vendrà-donada-per-la-pregunta-24-té-formació-sobre-salut-vocal-on-les-possibles-respostes-són">Aquí considerarem que la percepció de la qualitat de la mateixa ve donada per l’score. I la variable qualitativa “Formació en veu” vendrà donada per la pregunta 24: “Té formació sobre salut vocal?” on les possibles respostes són:</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 185 Columns: 38
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: ";" chr
+(33): Sexe, On fa feina?, Cos docent, Quina edat té?, Practica esport o ... dbl
+(4): ID, De l'1 al 10 quina importancia té la veu per a vostè?, De l'1 ... lgl
+(1): ...38
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...38`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Formació" "Qualitat"</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practica_2_miki_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Feim un ANOVA:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Qualitat<span class="sc">~</span>Formació, <span class="at">data=</span>dat_gen))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+Formació      5    642  128.40   3.225 0.00819 **
+Residuals   179   7127   39.82                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Ara sí, veiem com hem trobat un p-valor de 0.00819 per al test de variàncies. Com el p-valor és INFERIOR al llindar estàndard de 0.05, ens podem plantejar de REBUTJAR la hipòtesi nul·la. És a dir, hi ha un factor amb tendència mitjana diferent als altres. El que NO ens diu el test ANOVA és quin parell de grups presenten aquesta disparitat. Per a comparar parelles de mitjanes, la teoria diu que aquestes han de seguir una distribució de NORMALITAT. Llavors hem de comprovar aquesta condició i, ho podem fer amb els tests de <strong>KOLMOGOROV-SMIRNOV</strong> o el de ANDERSON-DARLING:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lillie.test</span>(d2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Lilliefors (Kolmogorov-Smirnov) normality test
+
+data:  d2
+D = 0.12687, p-value = 1.128e-07</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ad.test</span>(d2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Anderson-Darling normality test
+
+data:  d2
+A = 4.7218, p-value = 9.726e-12</code></pre>
+</div>
+</div>
+<p>Veiem que ambdós tests donen un p-valor molt per DAMUNT de 0.05, que és el nostre llindar de significació. Llavors hem de rebutjar a priori la idea de que segueixen una distribució normal. No obstant, això, la nostra mostra és de 185 individus, és a dir, és considerada una mostra gran (&lt;30 individus). Aleshores el <strong>Teorema Central del Límit</strong> ens suggereix que, amb mostres d’aquest tamany, la desviació amb respecte la normalitat la podem despreciar. És a dir, podem fer tests per parelles que requereixen la hipòtesi de Normalitat. Farem aleshores un test per parelles de <strong>Holm</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pairwise.t.test(dat_gen$Formació, dat_gen$Qualitat, paired=TRUE) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
 <p>Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.</p>
 </section>
 
@@ -258,7 +322,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -290,29 +365,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -320,7 +373,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

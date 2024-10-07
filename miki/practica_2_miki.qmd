@@ -20,7 +20,7 @@ library(tidyverse)
 library(viridis)
 library(hrbrthemes)
 library(nortest)
-dat <- read_delim("data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
+dat <- read_delim("../data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 ```
@@ -152,7 +152,7 @@ summary(aov(qualitat_veu~col25, data=dat_graf_2))
 
 Hem obtingut un p-valor del 0.417 i, per tant NO podem rebutjar la hipòtesi nul·la. No podem dir que el conusm d'algun dels medicaments influeixi en la qualitat de la veu més que qualsevol altre. Però sí que podem considerar una agrupació diferent dels factors. A partir d'ara, només compararem els que sí han consumit medicaments amb els que no ho han fet. Passam a tenir dos factors:
 
-```{r, echo=FALE,warning=FALSE}
+```{r, echo=FALSE,warning=FALSE}
 
 dat_graf3<-dat_graf_2 %>% mutate(col25=case_when(
   col25!="No"~"Sí", 
@@ -184,7 +184,7 @@ Aquí considerarem que la percepció de la qualitat de la mateixa ve donada per 
 
 
 ```{r,echo=FALSE,warning=FALSE}
-dat <- read_delim("data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
+dat <- read_delim("../data/raw_data/Salut_Vocal_anonimizada_raw.csv", 
     delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 d1 <- dat$`Té formació sobre salut vocal?`
@@ -236,7 +236,7 @@ Farem aleshores un test per parelles de **Holm**:
 ```{r}
 
 
-pairwise.t.test(dat_gen$Formació, dat_gen$Qualitat, paired=TRUE) 
+#pairwise.t.test(dat_gen$Formació, dat_gen$Qualitat, paired=TRUE) 
 
 ```
 
