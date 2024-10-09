@@ -105,7 +105,7 @@ Por último, vamos a añadir la variable VHI al dataframe original y a eliminar 
 
 ```{r}
 data <- data %>% select(-c(28:37))%>% 
-   bind_cols(VHI=data_vhi$score)
+   bind_cols(VHI=data_vhi$VHI)
 glimpse(data) 
 ```
 
@@ -146,27 +146,76 @@ glimpse(data)
 
 **Grupo: tojumo (Melción, Albert, Miquel Angelo)**
 
+Primero veamos si hay alguna diferencia notable entre la gente que toma medicación y la gente que no toma. Para ello haremos un grafico de cajas donde separaremos entre gente que toma medicación y gente que no toma y evaluaremos segun su VHI, que recordemos, como mayor VHI, menor calidad de voz.
+
 ```{r}
 # Separam la gent que pren medicació entre si en pren o no
-data_medicacion <- data %>% select(id, importancia_voz, medicacion) %>% 
+data_medicacion <- data %>% select(id, VHI, medicacion) %>% 
   mutate(medicacion = if_else(medicacion == "No", 
                                            "No", 
                                            "Sí"))
 
-# Imprimim els resultats amb un gràfic de violins
-data_medicacion %>%
-  ggplot( aes(x = medicacion, y=importancia_voz, fill=medicacion)) +
-    geom_violin(width=1.4) +
-    geom_boxplot(width=0.1, color="grey", alpha=0.2) +
-    scale_fill_viridis(discrete = TRUE) +
-    theme_ipsum() +
-    theme(
-      legend.position="none",
-      plot.title = element_text(size=11)
-    ) +
-    ggtitle("") +
-    xlab("")
+# Imprimim els resultats amb un gràfic 
+data_medicacion %>% 
+ggplot(aes(x = medicacion, y = VHI)) + 
+  geom_boxplot(aes(color = medicacion), width = 0.3) +
+  geom_jitter(aes(color = medicacion), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0)) + 
+  scale_x_discrete(labels = c("No", "Sí"))+
+  labs(x = "Pren medicació", y = "Qualitat de la veu")+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 ```
+
+Como podemos ver en esta gráfica, las dos poblaciones siguen una distribución parecida, a pesar de que haya más gente que no toma medicación y menos gente que si que toma. Como podemos observar, los casos más estremos, con peor VHI (o calidad de voz) pertenecen a la gente que toma medicación. Este suceso se puede explicar si suponemos que la gente toma medicación cuando ya ha sufrido el daño y no para prevenir y cuidar.
+
+
+Hagamos un poco de estadística descriptiva para ver si siguen la misma districución de datos:
+
+
+```{r}
+# Enquestats que no prenen medicació
+no_medicacion <- data_medicacion %>% 
+  filter(medicacion == "No")
+
+mean(no_medicacion$VHI)
+median(no_medicacion$VHI)
+sd(no_medicacion$VHI)
+
+# Enquestats que sí prenen medicació
+si_medicacion <- data_medicacion %>% 
+  filter(medicacion == "Sí")
+
+mean(si_medicacion$VHI)
+median(si_medicacion$VHI)
+sd(si_medicacion$VHI)
+```
+
+Como podemos ver, los datos siguen una distribución muy similar (que ya podiamos intuir en el gráfico de cajas). Veamos si los datos muestran diferencias entre distribuciones con los siguientes test:
+
+
+```{r}
+# Comprovamos si los datos siguen una distribución normal
+shapiro.test(no_medicacion$VHI)
+shapiro.test(si_medicacion$VHI)
+
+# Com les dades NO són normals
+wilcox.test(VHI ~ medicacion, data = data_medicacion)
+
+# Test ANOVA, no paramètric
+kruskal.test(VHI ~ medicacion, data = data)
+
+```
+
+El primer test lo utilizamos simplemente para saber si siguen una distribución normal los datos y saber que test podemos utilizar después. 
+
+El segundo test, el `wilconox rank sum test` nos dice que no hay diferencias significativas entre las dos distribuciones del principio, profesores que no toman medicación y profesores que sí, ya que el p-valor es mayor a $0.05$.
+
+Hagamos un último test para ver si hay algun medicamento en concreto que se escapa de estas distribuciones, con el resultado superior a $0.05$ del `kruskal test` observamos que ningun medicamento sigue una distribución diferente a no tomar medicamentos. 
+
+Por tanto, podemos concluir que ningún medicamento influye en la calidad de la voz. Aunque este dato puede ser mal interpretado por los datos que tenemos. Por ejemplo, podria ser que la gente que tuviese mala calidad de voz haya decidio tomar medicamento,en canvio la gente "sana" no. Para sacar conclusiones más certeras seria necesario repetir la encuesta antes y después de la medicación para poder observar la evolución del medicamento.
+
 
 
 
