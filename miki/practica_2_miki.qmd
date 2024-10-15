@@ -240,6 +240,53 @@ Farem aleshores un test per parelles de **Holm**:
 
 ```
 
+## Analitzam Logopeda
+
+```{r}
+data <- read_csv2(file = "../data/Salut_Vocal_anonimizada.csv" )
+data <- data %>%
+  select(-ncol(data))
+CNam = c()
+ for (i in 1:37){
+   CNam = c(CNam, paste0("col",as.character(i)))
+ }
+names(data) = CNam
+```
+
+```{r}
+data <- data %>% 
+  mutate(across(tail(names(data),10), ~case_when(
+    .=='Mai'~0,
+    .=='Gairebé mai' ~1,
+    .=='A vegades'~2,
+    .=='Gairebé sempre'~3,
+    .=='Sempre' ~4)))
+
+```
+
+```{r}
+data <- data %>% 
+  mutate(SCORE = rowSums(across(tail(names(data),10)),
+                         na.rm = TRUE))
+```
+
+```{r}
+data<-data %>% mutate(col24=case_when(
+  col24=="No, mai he fet cap formació"~"Mai",
+  col24=="Si, vaig fer un curs fa temps"~"Fa temps",
+  col24=="He hagut de fer sessions de rehabilitació vocal (logopèdia)"~"Logopeda",
+  col24=="He fet la formació Com puc cuidar la meva veu impartida pel Servei de Prevenció"~"Formació",
+  col24=="He fet formació vocal pel meu compte"~"Pel seu Compte",
+  TRUE~"Altres"
+))
+```
+
+```{r}
+dat_Log <- data %>% filter(col24 == 'Logopeda')
+```
+
+
+
 ## Conclusions
 
 Per ara hem pogut fer això, voldriem canviar els noms a parte de explicar todo el código que hemos hecho. Varem perdre molt de temps en consegguir el score. Després per cada medicament voliem mirar el score i fer una comparació, però com podem observar amb els punts vermells hi ha una major densitat en una resposta i en la resta poca i pentura és precipitat treure conclussions.

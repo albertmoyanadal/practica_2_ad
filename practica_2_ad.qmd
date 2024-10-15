@@ -185,6 +185,9 @@ ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(col
 
 ```
 
+```{r}
+
+```
 
 ## Conclusions
 
