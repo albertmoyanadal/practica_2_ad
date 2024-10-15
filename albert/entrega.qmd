@@ -13,6 +13,8 @@ Rendering:
 
 ```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# install.packages("car")
+library(car)
 library(tidyverse)
 library(readr)
 library(hrbrthemes)
@@ -124,11 +126,11 @@ Realizaremos un contraste de hipotesis, recordemos que en un contraste de hipót
 
 ### Análisis Exploratorio
 
-Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i$. Esto és, con $n$ medicamentos: 
+Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}$. I suponer como hipótesis nula que hay algunas medias distintas.
 $$
-H_0 = \{\mu_0, \ldots, \mu_{n-1} \}
+H_0 = \{\exists j,i \ \ \ \ \mu_j > \mu_i  \}
 $$
-I enctonces si consideramos la media $\mu_0$ como 'No toma medicamentos' ver si $\mu_i > \mu_0$ para los $i > 0$. Observemos la siguiente gráfica de los medicamentos:
+Observemos la siguiente gráfica de los medicamentos:
 
 ```{r,echo=FALSE,warning=FALSE}
 
@@ -182,6 +184,7 @@ data_medicacion <- data %>%
 data_medicacion %>% 
   ggplot(aes(x = medicacion, y = VHI, fill = medicacion)) + 
   geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2) +
+  geom_boxplot(aes(color = medicacion), width = 0.3, alpha = 0.2)+
   geom_jitter(aes(color = medicacion), alpha = 0.5, 
               show.legend = TRUE, 
               position = position_jitter(width = 0.3, seed = 0)) + 
@@ -191,7 +194,7 @@ data_medicacion %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-El gráfico de cajas violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
+El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
 
 
 ### Análisis inferencial
@@ -214,6 +217,25 @@ shapiro.test(no_medicacion$VHI)
 shapiro.test(si_medicacion$VHI)
 
 ```
+Voleu ficar els QQPlots??? 
+
+ExplicaciÓ:
+
+Sigui $n$ la longitud de la mostra, llavors per $ k = 1, \ldots n$ hi ha un $k/n$-cantil
+
+Llavors la recta blava mos representa la recta cuantil-cuantil i la franja blava on haurien d'estar en 95% de les dades que com podem observar es surten
+```{r}
+muestra = si_medicacion$VHI
+  qqPlot((muestra-mean(muestra))/sqrt(var(muestra)), distribution="norm", mean = 0, sd = 1, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal')
+
+```
+
+
+```{r}
+muestra2 = no_medicacion$VHI
+qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE)
+```
+
 
 El resultado del test nos ha dado un p-valor de $1.62\times10^{-7}$ para los no medicados y de $3.738\times10^{-5}$ pera los medicados. Como el p-valor es mucho menor que $0.05$ en ambos casos podemos decir que no siguen una distribución normal. 
 

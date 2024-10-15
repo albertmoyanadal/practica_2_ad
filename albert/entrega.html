@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -132,9 +166,9 @@ window.Quarto = {
 </section>
 <section id="análisis-exploratorio" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-exploratorio">Análisis Exploratorio</h3>
-<p>Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i\)</span>. Esto és, con <span class="math inline">\(n\)</span> medicamentos: <span class="math display">\[
-H_0 = \{\mu_0, \ldots, \mu_{n-1} \}
-\]</span> I enctonces si consideramos la media <span class="math inline">\(\mu_0\)</span> como ‘No toma medicamentos’ ver si <span class="math inline">\(\mu_i &gt; \mu_0\)</span> para los <span class="math inline">\(i &gt; 0\)</span>. Observemos la siguiente gráfica de los medicamentos:</p>
+<p>Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}\)</span>. I suponer como hipótesis nula que hay algunas medias distintas. <span class="math display">\[
+H_0 = \{\exists j,i \ \ \ \ \mu_j &gt; \mu_i  \}
+\]</span> Observemos la siguiente gráfica de los medicamentos:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -159,7 +193,7 @@ H_0 = \{\mu_1 &gt; \mu_0\}
 </div>
 </div>
 </div>
-<p>El gráfico de cajas violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.</p>
+<p>El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.</p>
 </section>
 <section id="análisis-inferencial" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-inferencial">Análisis inferencial</h3>
@@ -179,6 +213,32 @@ W = 0.91542, p-value = 1.62e-07</code></pre>
 
 data:  si_medicacion$VHI
 W = 0.83387, p-value = 3.738e-05</code></pre>
+</div>
+</div>
+<p>Voleu ficar els QQPlots???</p>
+<p>ExplicaciÓ:</p>
+<p>Sigui <span class="math inline">\(n\)</span> la longitud de la mostra, llavors per $ k = 1, n$ hi ha un <span class="math inline">\(k/n\)</span>-cantil</p>
+<p>Llavors la recta blava mos representa la recta cuantil-cuantil i la franja blava on haurien d’estar en 95% de les dades que com podem observar es surten</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>muestra <span class="ot">=</span> si_medicacion<span class="sc">$</span>VHI</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qqPlot</span>((muestra<span class="sc">-</span><span class="fu">mean</span>(muestra))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">var</span>(muestra)), <span class="at">distribution=</span><span class="st">"norm"</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">id=</span><span class="cn">FALSE</span> , <span class="at">grid =</span> <span class="cn">FALSE</span>,<span class="at">col =</span> <span class="fu">carPalette</span>()[<span class="dv">1</span>], <span class="at">col.lines =</span> <span class="fu">carPalette</span>()[<span class="dv">8</span>], <span class="at">main =</span> <span class="st">'Relación cuantiles con una normal'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="entrega_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>muestra2 <span class="ot">=</span> no_medicacion<span class="sc">$</span>VHI</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(muestra2, <span class="at">distribution=</span><span class="st">"norm"</span>, <span class="at">mean =</span> <span class="fu">mean</span>(muestra2), <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(muestra2)), <span class="at">id=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="entrega_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>El resultado del test nos ha dado un p-valor de <span class="math inline">\(1.62\times10^{-7}\)</span> para los no medicados y de <span class="math inline">\(3.738\times10^{-5}\)</span> pera los medicados. Como el p-valor es mucho menor que <span class="math inline">\(0.05\)</span> en ambos casos podemos decir que no siguen una distribución normal.</p>
