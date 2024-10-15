@@ -85,7 +85,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#anàlisi-descriptiu-de-la-base-de-dades" id="toc-anàlisi-descriptiu-de-la-base-de-dades" class="nav-link" data-scroll-target="#anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</a></li>
   <li><a href="#neteja-i-de-les-dades" id="toc-neteja-i-de-les-dades" class="nav-link" data-scroll-target="#neteja-i-de-les-dades">Neteja i de les dades</a></li>
   <li><a href="#respondre-preguntes" id="toc-respondre-preguntes" class="nav-link" data-scroll-target="#respondre-preguntes">Respondre preguntes</a></li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
 </div>
@@ -273,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  dat_graf_2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dat_graf_2,D)</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Graficam la mitja de el SCORE en funció del medicament que pren</p>
+<p>Graficam la mitjana del SCORE en funció del medicament que prèn:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_graf_2, <span class="fu">aes</span>(<span class="at">x =</span> Medicament,<span class="at">y=</span>Qualitat_veu))<span class="sc">+</span><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>Medicament),<span class="at">width=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> Medicament), <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
@@ -287,9 +286,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>Seria lògic demanar-se si podem inferir qualque cosa a partir d’aquest gràfic. És a dir, si un dels medicaments dona uns resultats més o menys elevats que la resta. Això ho podem fer amb un test de variàncies ANOVA:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Length     Class      Mode 
+       46 character character </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)
+Medicament   4  396.7   99.18   1.644  0.182
+Residuals   41 2473.4   60.33               </code></pre>
+</div>
+</div>
+<p>Però, amb un p-valor de 0.182, tenim que no podem treure conclusions a partir d’aquí. ## Conclusions</p>
 </section>
 
 </main>
