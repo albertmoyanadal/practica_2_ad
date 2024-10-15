@@ -1,0 +1,203 @@
+---
+title: "Síntomas vocales en profesores"
+subtitle: "20582- Análisis de Datos para el GMAT"
+date: today
+format:
+  html:
+    theme: lumen
+    toc: true
+    toc-depth: 3
+Rendering:
+    embed-resources: true
+---
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(readr)
+library(hrbrthemes)
+library(janitor)
+library(viridis)
+```
+
+# Lectura y limpieza de los datos
+
+Leemos los datos del fichero "Salut_Vocal_anonimizada.csv" y cambiamos los nombres de las variables.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+raw_data <- read.csv("../data/Salut_Vocal_anonimizada.csv",
+                   header=TRUE, sep=";")
+
+raw_data <- raw_data %>% select(-X) %>% 
+   rename(
+    Importancia_voz = "De.l.1.al.10.quina.importancia.té.la.veu.per.a.vostè.",
+    Sexo = "Sexe",
+    Lugar_trabajo="On.fa.feina.",
+    Cuerpo_docente="Cos.docent",
+    Edad="Quina.edat.té.",
+    Actividas_fisica="Practica.esport.o.fa.alguna.activitat.física.",
+    Importancia_deporte="De.l.1.al.10.quina.importancia.té.la.pràctica.de.l.esport.o.activitat.física.per.a.vostè.",
+    Calidad_sueño="Té.una.bona.qualitat.del.son.",
+    Cafe="Consumeix.cafè.",
+    Tabaco="Consumeix.tabac.",
+    Alcohol="Consumeix.alcohol.",
+    Bebida_gas="Consumeix.begudes.amb.gas.",
+    Dieta_saludable="De..l.1.al.10.assenyali.si.segueix.una.dieta.equilibrada.i.saludable.",
+    Diagnostico="Ha.estat.diagnosticat.per.un.metge.o.metgessa.d.alguna.de.les.malalties.següents.",
+    Patologia="Si.ha.marcat.alguna.de.les.opcions.anterior..especifiqui.la.patologia.",
+    Diagnostico_especialista="Ha.estat.diagnosticat.per.un.especialista.mèdic..otorinolaringòleg..foniatra..d.alguna.lesió.a.les.cordes.vocals.",
+    Sintomas="Aquest.mes.ha.tengut.algún.símptoma.vocal.dels.següents..Es.pot.marcar.més.d.una.opció",
+    Operacion="L.han.operat.de.les.cordes.vocals.",
+    Tiempo_alteracion="Si.té.alguna.alteració.de.la.veu..recorda.quin.temps.fa.que.va.començar.",
+    Baja_voz="En.alguna.ocasió..ha.estat.de.baixa.laboral.per.problemes.de.veu.",
+    Baja_larga="Si.la.resposta.a.la.pregunta.anterior.és.afirmativa..indiqui.la.periodicitat..cada.any..trimestre.....i.la.durada.de.la.baixa.més.llarga.i.la.malaltia",
+    Problema_curso22_23="Ha.tengut.problemes.de.veu.importants.i.que.li.han.dificultat.la.feina.al.llarg.del.curs.2022.2023.",
+    Formacion_voz="Té.formació.sobre.salut.vocal.",
+    Medicacion="Pren.alguna.o.algunes.de.les.medicacions.següents..Es.pot.marcar.més.d.una.opció",
+    Higiene_vocal="Segueix.una.rutina.d.higiene.vocal.",
+    Actividades="Fa.alguna.de.les.activitats.següents..Es.pot.marcar.més.d.una.opció",
+    No_me_ecuchan="La.gent.em.sent.amb.dificultat.a.causa.de.la.meva.veu",
+    No_me_escuchan_ruido="La.gent.no.m.entén.en.llocs.sorollosos",
+    Alteracion_vida_social="Els.meus.problemes.amb.la.veu.alteren.la.meva.vida.personal.i.social",
+    Desplazado_conversacion="Em.sent.desplaçat.de.les.converses.per.la.meva.veu",
+    Rendimiento_laboral="El.meu.problema.amb.la.veu.afecta.el.rendiment.laboral",
+    Tensar_producir_voz="Not.que.necessit.tensar.la.gola..gargamella..per.produir.la.veu",
+    Calidad_imprevisible="La.qualitat.de.la.meva.veu.és.imprevisible",
+    Me_molesta="La.meva.veu.em.molesta",
+    Minusvalia="La.meva.veu.em.fa.sentir.certa.minusvalidesa",
+    Gente_pregunta="La.gent.em.pregunta..què.et.passa.amb.la.veu."
+)
+
+glimpse(raw_data)
+```  
+
+Observamos que hay 185 respuestas y 37 variables. Vamos a limpiar los nombres de las variables y a convertir las variables categóricas en factores, a excepción de las variables "importancia_voz", "importancia_deporte" y "dieta_saludable" que las dejamos como variables cuantitativas discretas.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data <- janitor::clean_names(raw_data) %>% 
+        mutate(across(-c(importancia_voz,
+                         importancia_deporte,
+                         dieta_saludable), as.factor))
+
+glimpse(data)
+
+```  
+
+Ahora, para calcular el índice de calidad de voz (VHI), vamos a seleccionar las variables desde la 28 a la 37 para convertirlas en cuantitativas discretas y a sumarlas para obtener el índice VIH.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data_vhi <- data %>% select(28:37) %>% 
+  mutate(across(everything(), ~case_when(
+     . == "Mai" ~ 0,
+     . == "Gairebé mai" ~ 1,
+     . == "A vegades" ~ 2,
+     . == "Gairebé sempre" ~ 3,
+     . == "Sempre" ~ 4
+   ))
+   )
+
+data_vhi <- data_vhi %>% mutate(VHI=rowSums(data_vhi))
+
+glimpse(data_vhi) 
+```
+
+Por último, vamos a añadir la variable VHI al dataframe original y a eliminar las variables de la 28 a la 37.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data <- data %>% select(-c(28:37))%>% 
+   bind_cols(VHI=data_vhi$VHI)
+glimpse(data) 
+```
+
+
+
+
+# Análisis de la Influencia de la Medicación en la Calidad de la Voz.
+
+**Grupo: ToJuMo (Melcion Ciudad, Albert Moya, Miquel Àngel Llauger)**
+
+### Introducción
+
+El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.
+
+
+### Análisis Exploratorio
+
+Para comenzar, separamos la población en dos grupos: profesores que toman medicación y los que no. A continuación, se construye un gráfico de cajas para visualizar la distribución de los valores de VHI en ambos grupos.
+
+
+```{r, echo=FALSE, warning=FALSE}
+# Separación por consumo de medicación
+data_medicacion <- data %>% 
+  select(id, VHI, medicacion) %>% 
+  mutate(medicacion = if_else(medicacion == "No", "No", "Sí"))
+
+# Gráfico de cajas
+data_medicacion %>% 
+  ggplot(aes(x = medicacion, y = VHI)) + 
+  geom_boxplot(aes(color = medicacion), width = 0.3) +
+  geom_jitter(aes(color = medicacion), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0)) + 
+  scale_x_discrete(labels = c("No", "Sí")) +
+  labs(x = "Consumo de Medicación", y = "Índice de Calidad Vocal (VHI)") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+El gráfico de cajas revela que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
+
+
+### Análisis inferencial
+
+Veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
+
+Procedemos a realizar un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. 
+
+```{r, echo=FALSE, warning=FALSE}
+# Enquestats que no prenen medicació
+no_medicacion <- data_medicacion %>% 
+  filter(medicacion == "No")
+
+# Enquestats que sí prenen medicació
+si_medicacion <- data_medicacion %>% 
+  filter(medicacion == "Sí")
+
+# Prueba de normalidad
+shapiro.test(no_medicacion$VHI)
+shapiro.test(si_medicacion$VHI)
+
+```
+
+El resultado del test nos ha dado un p-valor de $1.62\times10^{-7}$ para los no medicados y de $3.738\times10^{-5}$ pera los medicados. Como el p-valor es mucho menor que $0.05$ en ambos casos podemos decir que no siguen una distribución normal. 
+
+Por tanto, haremos un test no paramétrico para determinar si siguen la misma distribución. En este caso aremos el **test de Wilconox**:
+
+
+
+```{r, echo=FALSE, warning=FALSE}
+# Test no paramétrico de Wilcoxon
+wilcox.test(VHI ~ medicacion, data = data_medicacion)
+```
+
+ Los resultados del test de Wilcoxon no muestran diferencias significativas entre los dos grupos (p-valor $> 0.05$), sugiriendo que el consumo de medicación no está asociado con diferencias significativas en la calidad de la voz ya que siguen la misma distribución.
+ 
+
+### Análisis Adicional: Comparativa entre Medicamentos
+
+Finalmente, para evaluar si existe alguna medicación específica que influya en la calidad de la voz, se realiza un **test de Kruskal-Wallis**, un análisis no paramétrico que permite comparar más de dos grupos. La elección de este test se ha hecho debido a que ningún medicamento sigue una distribución normal.
+
+```{r, echo=FALSE, warning=FALSE}
+# Test de Kruskal-Wallis
+kruskal.test(VHI ~ medicacion, data = data)
+```
+
+Los resultados del test de Kruskal-Wallis también muestran un p-valor suficientemente superior a $0.05$, lo que sugiere que no hay diferencias significativas entre los diferentes tipos de medicación y no tomar ninguna medicación.
+
+
+### Conclusión
+
+Los resultados de este estudio no muestran una asociación significativa entre el consumo de medicación y la calidad de la voz en profesores. Sin embargo, este resultado debe interpretarse con cautela, ya que la medicación podría estar siendo utilizada como una medida correctiva después de haber sufrido problemas vocales, en lugar de como una medida preventiva. 
+
+Un análisis más profundo que incluya datos sobre la calidad de la voz antes y después del inicio del tratamiento con medicación sería necesario para obtener conclusiones más sólidas sobre su impacto real en la calidad vocal.
+
