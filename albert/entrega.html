@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-10-14">
+<meta name="dcterms.date" content="2024-10-15">
 
 <title>Síntomas vocales en profesores</title>
 <style>
@@ -103,7 +103,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 14, 2024</p>
+      <p class="date">October 15, 2024</p>
     </div>
   </div>
   
@@ -128,10 +128,13 @@ window.Quarto = {
 <section id="introducción" class="level3">
 <h3 class="anchored" data-anchor-id="introducción">Introducción</h3>
 <p>El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.</p>
+<p>Realizaremos un contraste de hipotesis, recordemos que en un contraste de hipótesis podemos rechazar o no nuestra hipótesis nula. Esto último no implica la aceptación.</p>
 </section>
 <section id="análisis-exploratorio" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-exploratorio">Análisis Exploratorio</h3>
-<p>Para comenzar, separamos la población en dos grupos: profesores que toman medicación y los que no. A continuación, se construye un gráfico de cajas para visualizar la distribución de los valores de VHI en ambos grupos.</p>
+<p>Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i\)</span>. Esto és, con <span class="math inline">\(n\)</span> medicamentos: <span class="math display">\[
+H_0 = \{\mu_0, \ldots, \mu_{n-1} \}
+\]</span> I enctonces si consideramos la media <span class="math inline">\(\mu_0\)</span> como ‘No toma medicamentos’ ver si <span class="math inline">\(\mu_i &gt; \mu_0\)</span> para los <span class="math inline">\(i &gt; 0\)</span>. Observemos la siguiente gráfica de los medicamentos:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -141,12 +144,27 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>El gráfico de cajas revela que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.</p>
+<p>Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias. Entonces nuestra variable cualitativa (Medicamentos) la separamos en dos grupos: profesores que toman medicación y los que no.</p>
+<p>Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Supondremos, observando el gráfico anterior y teniendo en cuenta que muchos medicamentos tienen efectos secundoarios, que la media si toma medicamentos es mayor que en el caso contrario.</p>
+<p><span class="math display">\[
+H_0 = \{\mu_1 &gt; \mu_0\}
+\]</span> Donde <span class="math inline">\(\mu_0\)</span> representa la media del VHI para la población que no toma medicamentos y <span class="math inline">\(\mu_1\)</span> para los que si toman.</p>
+<p>A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="entrega_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El gráfico de cajas violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.</p>
 </section>
 <section id="análisis-inferencial" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-inferencial">Análisis inferencial</h3>
-<p>Veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población.</p>
-<p>Procedemos a realizar un análisis de normalidad con el test de <strong>Shapiro-Wilk</strong> para determinar si la distribución de los datos en cada grupo es normal.</p>
+<p>Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma. Asi, veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población.</p>
+<p>Procedemos a realizar un análisis de normalidad con el test de <strong>Shapiro-Wilk</strong> para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>

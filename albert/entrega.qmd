@@ -120,10 +120,56 @@ glimpse(data)
 
 El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.
 
+Realizaremos un contraste de hipotesis, recordemos que en un contraste de hipótesis podemos rechazar o no nuestra hipótesis nula. Esto último no implica la aceptación.
 
 ### Análisis Exploratorio
 
-Para comenzar, separamos la población en dos grupos: profesores que toman medicación y los que no. A continuación, se construye un gráfico de cajas para visualizar la distribución de los valores de VHI en ambos grupos.
+Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i$. Esto és, con $n$ medicamentos: 
+$$
+H_0 = \{\mu_0, \ldots, \mu_{n-1} \}
+$$
+I enctonces si consideramos la media $\mu_0$ como 'No toma medicamentos' ver si $\mu_i > \mu_0$ para los $i > 0$. Observemos la siguiente gráfica de los medicamentos:
+
+```{r,echo=FALSE,warning=FALSE}
+
+dat_graf_2 <- data %>% select(medicacion,VHI)
+names(dat_graf_2) = c("col25","qualitat_veu")
+
+dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
+  col25=="Corticosteroides inhalats"~"1",
+  col25=="Antidepressius (fluoxetina i amitriptilina)"~"2",
+  col25=="Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)"~"3",
+  col25=="Aspirina i antiinflamatoris no esteroideus"~"4",
+  col25=="IECA (enalpapril, ramipril, captopril...)"~"5",
+  col25== "Diurètics (espirolactona, furosemida)"~"6",
+  col25=="Clorpromazina"~"7",
+  col25=="L-Dopa"~"8",
+  col25=="Vitamina C"~"9",
+  col25=="Danazol"~"10",
+  col25=="No"~"No",
+  TRUE~"Varis"
+  
+))
+
+ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=col25),width=0.3,show.legend = FALSE)+
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = FALSE,
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
+  labs(y = "VHI")+xlab("Medicaments")+ggtitle('VHI por Medicamentos')+
+theme(
+    axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+```
+
+Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias. Entonces nuestra variable cualitativa (Medicamentos) la separamos en dos grupos: profesores que toman medicación y los que no. 
+
+Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Supondremos, observando el gráfico anterior y teniendo en cuenta que muchos medicamentos tienen efectos secundoarios, que la media si toma medicamentos es mayor que en el caso contrario.
+
+$$
+H_0 = \{\mu_1 > \mu_0\}
+$$
+Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman.
+
+A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.
 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -134,8 +180,8 @@ data_medicacion <- data %>%
 
 # Gráfico de cajas
 data_medicacion %>% 
-  ggplot(aes(x = medicacion, y = VHI)) + 
-  geom_boxplot(aes(color = medicacion), width = 0.3) +
+  ggplot(aes(x = medicacion, y = VHI, fill = medicacion)) + 
+  geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2) +
   geom_jitter(aes(color = medicacion), alpha = 0.5, 
               show.legend = TRUE, 
               position = position_jitter(width = 0.3, seed = 0)) + 
@@ -145,14 +191,14 @@ data_medicacion %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-El gráfico de cajas revela que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
+El gráfico de cajas violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
 
 
 ### Análisis inferencial
 
-Veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
+Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma.  Asi, veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
 
-Procedemos a realizar un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. 
+Procedemos a realizar un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal.
 
 ```{r, echo=FALSE, warning=FALSE}
 # Enquestats que no prenen medicació
