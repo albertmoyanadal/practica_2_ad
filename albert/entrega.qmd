@@ -126,11 +126,16 @@ Realizaremos un contraste de hipotesis, recordemos que en un contraste de hipót
 
 ### Análisis Exploratorio
 
-Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}$. I suponer como hipótesis nula que hay algunas medias distintas.
+Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}$. I suponer como hipótesis nula que los medicamentos no suponen una variación en la calidad vocal.
+
 $$
-H_0 = \{\exists j,i \ \ \ \ \mu_j > \mu_i  \}
+\begin{align}
+  &H_0 = \{ \mu_0 = \mu_1 = \ldots = \mu_{n-1}  \} \\
+  &H_1 = \{ \exists i,j \ \ \ t.q. \ \ \mu_i \ne \mu_j\} 
+  
+ \end{align}
 $$
-Observemos la siguiente gráfica de los medicamentos:
+Notemos que $H_1$ es equivalente a concluir que tomar medicamentos inflluye en la calidad de la voz.Observemos la siguiente gráfica de los medicamentos:
 
 ```{r,echo=FALSE,warning=FALSE}
 
@@ -164,12 +169,14 @@ theme(
 
 Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias. Entonces nuestra variable cualitativa (Medicamentos) la separamos en dos grupos: profesores que toman medicación y los que no. 
 
-Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Supondremos, observando el gráfico anterior y teniendo en cuenta que muchos medicamentos tienen efectos secundoarios, que la media si toma medicamentos es mayor que en el caso contrario.
+Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:
 
 $$
-H_0 = \{\mu_1 > \mu_0\}
+H_0 = \{\mu_1 = \mu_0\} \\
+H_1 = \{\mu_1 \ne \mu_0 \}
 $$
-Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman.
+
+Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman. Esto lo podriamos contrastar si nuestras variables siguen una distribución normal.
 
 A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.
 
@@ -213,7 +220,7 @@ muestra2 = no_medicacion$VHI
 M2 = mean(muestra2)
 SD2 = sqrt(var(muestra2))
 xl = paste0('Cuantiles N(',sprintf("%.2f",M2),', ',sprintf("%.2f",SD2),')')
-qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, No toma medicación', xlab = xl, ylab = 'Cuantiles VHI, sin medicación')
+qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, No toma medicación', xlab = xl, ylab = 'Cuantiles VHI, sin medicación', grid = FALSE)
 
 
 
@@ -228,7 +235,7 @@ muestra = si_medicacion$VHI
 M = mean(muestra)
 SD = sqrt(var(muestra))
 xl2 = paste0('Cuantiles N(',sprintf("%.2f",M),', ',sprintf("%.2f",SD),')')
-qqPlot((muestra-mean(muestra))/sqrt(var(muestra)), distribution="norm", mean = 0, sd = 1, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, Si toma medicación',xlab = xl2, ylab = 'Cuantiles VHI, con medicación')
+qqPlot(muestra, distribution="norm", mean = M, sd = SD, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, Si toma medicación',xlab = xl2, ylab = 'Cuantiles VHI, con medicación')
 
 
 # Prueba de normalidad
@@ -245,7 +252,7 @@ Por tanto, haremos un test no paramétrico para determinar si siguen la misma di
 
 ```{r, echo=FALSE, warning=FALSE}
 # Test no paramétrico de Wilcoxon
-wilcox.test(VHI ~ medicacion, data = data_medicacion)
+wilcox.test(si_medicacion$VHI, no_medicacion$VHI, paired = FALSE)
 ```
 
  Los resultados del test de Wilcoxon no muestran diferencias significativas entre los dos grupos (p-valor $> 0.05$), sugiriendo que el consumo de medicación no está asociado con diferencias significativas en la calidad de la voz ya que siguen la misma distribución.

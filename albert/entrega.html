@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -132,9 +132,12 @@ window.Quarto = {
 </section>
 <section id="análisis-exploratorio" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-exploratorio">Análisis Exploratorio</h3>
-<p>Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}\)</span>. I suponer como hipótesis nula que hay algunas medias distintas. <span class="math display">\[
-H_0 = \{\exists j,i \ \ \ \ \mu_j &gt; \mu_i  \}
-\]</span> Observemos la siguiente gráfica de los medicamentos:</p>
+<p>Para nuestro contraste de hipótesis nos gustaria hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}\)</span>. I suponer como hipótesis nula que los medicamentos no suponen una variación en la calidad vocal.</p>
+<p>$$ <span class="math display">\[\begin{align}
+  &amp;H_0 = \{ \mu_0 = \mu_1 = \ldots = \mu_{n-1}  \} \\
+  &amp;H_1 = \{ \exists i,j \ \ \ t.q. \ \ \mu_i \ne \mu_j\}
+  
+\end{align}\]</span> $$ Notemos que <span class="math inline">\(H_1\)</span> es equivalente a concluir que tomar medicamentos inflluye en la calidad de la voz.Observemos la siguiente gráfica de los medicamentos:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -145,10 +148,12 @@ H_0 = \{\exists j,i \ \ \ \ \mu_j &gt; \mu_i  \}
 </div>
 </div>
 <p>Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias. Entonces nuestra variable cualitativa (Medicamentos) la separamos en dos grupos: profesores que toman medicación y los que no.</p>
-<p>Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Supondremos, observando el gráfico anterior y teniendo en cuenta que muchos medicamentos tienen efectos secundoarios, que la media si toma medicamentos es mayor que en el caso contrario.</p>
+<p>Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:</p>
 <p><span class="math display">\[
-H_0 = \{\mu_1 &gt; \mu_0\}
-\]</span> Donde <span class="math inline">\(\mu_0\)</span> representa la media del VHI para la población que no toma medicamentos y <span class="math inline">\(\mu_1\)</span> para los que si toman.</p>
+H_0 = \{\mu_1 = \mu_0\} \\
+H_1 = \{\mu_1 \ne \mu_0 \}
+\]</span></p>
+<p>Donde <span class="math inline">\(\mu_0\)</span> representa la media del VHI para la población que no toma medicamentos y <span class="math inline">\(\mu_1\)</span> para los que si toman. Esto lo podriamos contrastar si nuestras variables siguen una distribución normal.</p>
 <p>A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -203,8 +208,8 @@ W = 0.83387, p-value = 3.738e-05</code></pre>
 <pre><code>
     Wilcoxon rank sum test with continuity correction
 
-data:  VHI by medicacion
-W = 3023.5, p-value = 0.6809
+data:  si_medicacion$VHI and no_medicacion$VHI
+W = 2776.5, p-value = 0.6809
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
