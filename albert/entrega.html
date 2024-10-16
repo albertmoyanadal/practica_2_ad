@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-10-15">
+<meta name="dcterms.date" content="2024-10-16">
 
 <title>Síntomas vocales en profesores</title>
 <style>
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -137,7 +103,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 15, 2024</p>
+      <p class="date">October 16, 2024</p>
     </div>
   </div>
   
@@ -198,30 +164,8 @@ H_0 = \{\mu_1 &gt; \mu_0\}
 <section id="análisis-inferencial" class="level3">
 <h3 class="anchored" data-anchor-id="análisis-inferencial">Análisis inferencial</h3>
 <p>Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma. Asi, veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población.</p>
-<p>Procedemos a realizar un análisis de normalidad con el test de <strong>Shapiro-Wilk</strong> para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal.</p>
+<p>Procedemos a realizar un análisis de normalidad con el test de <strong>Shapiro-Wilk</strong> para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal. También podemos observarlo con las graficas cuantil-cuantil comparando con una normal.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Shapiro-Wilk normality test
-
-data:  no_medicacion$VHI
-W = 0.91542, p-value = 1.62e-07</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Shapiro-Wilk normality test
-
-data:  si_medicacion$VHI
-W = 0.83387, p-value = 3.738e-05</code></pre>
-</div>
-</div>
-<p>Voleu ficar els QQPlots???</p>
-<p>ExplicaciÓ:</p>
-<p>Sigui <span class="math inline">\(n\)</span> la longitud de la mostra, llavors per $ k = 1, n$ hi ha un <span class="math inline">\(k/n\)</span>-cantil</p>
-<p>Llavors la recta blava mos representa la recta cuantil-cuantil i la franja blava on haurien d’estar en 95% de les dades que com podem observar es surten</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>muestra <span class="ot">=</span> si_medicacion<span class="sc">$</span>VHI</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qqPlot</span>((muestra<span class="sc">-</span><span class="fu">mean</span>(muestra))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="fu">var</span>(muestra)), <span class="at">distribution=</span><span class="st">"norm"</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>, <span class="at">id=</span><span class="cn">FALSE</span> , <span class="at">grid =</span> <span class="cn">FALSE</span>,<span class="at">col =</span> <span class="fu">carPalette</span>()[<span class="dv">1</span>], <span class="at">col.lines =</span> <span class="fu">carPalette</span>()[<span class="dv">8</span>], <span class="at">main =</span> <span class="st">'Relación cuantiles con una normal'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -229,16 +173,29 @@ W = 0.83387, p-value = 3.738e-05</code></pre>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "hola"</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>muestra2 <span class="ot">=</span> no_medicacion<span class="sc">$</span>VHI</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(muestra2, <span class="at">distribution=</span><span class="st">"norm"</span>, <span class="at">mean =</span> <span class="fu">mean</span>(muestra2), <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="fu">var</span>(muestra2)), <span class="at">id=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  no_medicacion$VHI
+W = 0.91542, p-value = 1.62e-07</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="entrega_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="entrega_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  si_medicacion$VHI
+W = 0.83387, p-value = 3.738e-05</code></pre>
 </div>
 </div>
 <p>El resultado del test nos ha dado un p-valor de <span class="math inline">\(1.62\times10^{-7}\)</span> para los no medicados y de <span class="math inline">\(3.738\times10^{-5}\)</span> pera los medicados. Como el p-valor es mucho menor que <span class="math inline">\(0.05\)</span> en ambos casos podemos decir que no siguen una distribución normal.</p>

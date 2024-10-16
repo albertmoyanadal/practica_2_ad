@@ -201,41 +201,41 @@ El gráfico de violín que ambas poblaciones siguen distribuciones similares, au
 
 Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma.  Asi, veamos si podemos generalizar el análisi anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
 
-Procedemos a realizar un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal.
+Procedemos a realizar un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal. También podemos observarlo con las  graficas cuantil-cuantil comparando con una normal.
+```{r}
+
+```
 
 ```{r, echo=FALSE, warning=FALSE}
 # Enquestats que no prenen medicació
 no_medicacion <- data_medicacion %>% 
   filter(medicacion == "No")
+muestra2 = no_medicacion$VHI
+M2 = mean(muestra2)
+SD2 = sqrt(var(muestra2))
+xl = paste0('Cuantiles N(',sprintf("%.2f",M2),', ',sprintf("%.2f",SD2),')')
+qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, No toma medicación', xlab = xl, ylab = 'VHI, sin medicación')
+
+print('hola')
+shapiro.test(no_medicacion$VHI)
+
 
 # Enquestats que sí prenen medicació
 si_medicacion <- data_medicacion %>% 
   filter(medicacion == "Sí")
 
+muestra = si_medicacion$VHI
+M = mean(muestra)
+SD = sqrt(var(muestra))
+xl2 = paste0('Cuantiles N(',sprintf("%.2f",M),', ',sprintf("%.2f",SD),')')
+qqPlot((muestra-mean(muestra))/sqrt(var(muestra)), distribution="norm", mean = 0, sd = 1, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, Si toma medicación',xlab = xl2, ylab = 'VHI, con medicación')
+
+
 # Prueba de normalidad
-shapiro.test(no_medicacion$VHI)
+
 shapiro.test(si_medicacion$VHI)
 
 ```
-Voleu ficar els QQPlots??? 
-
-ExplicaciÓ:
-
-Sigui $n$ la longitud de la mostra, llavors per $ k = 1, \ldots n$ hi ha un $k/n$-cantil
-
-Llavors la recta blava mos representa la recta cuantil-cuantil i la franja blava on haurien d'estar en 95% de les dades que com podem observar es surten
-```{r}
-muestra = si_medicacion$VHI
-  qqPlot((muestra-mean(muestra))/sqrt(var(muestra)), distribution="norm", mean = 0, sd = 1, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal')
-
-```
-
-
-```{r}
-muestra2 = no_medicacion$VHI
-qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE)
-```
-
 
 El resultado del test nos ha dado un p-valor de $1.62\times10^{-7}$ para los no medicados y de $3.738\times10^{-5}$ pera los medicados. Como el p-valor es mucho menor que $0.05$ en ambos casos podemos decir que no siguen una distribución normal. 
 
