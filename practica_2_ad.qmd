@@ -11,6 +11,7 @@ Rendering:
     embed-resources: true
 ---
 
+
 ```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 # install.packages("car")
@@ -21,6 +22,10 @@ library(hrbrthemes)
 library(janitor)
 library(viridis)
 ```
+
+
+Enllaç al repositori GIT: https://github.com/albertmoyanadal/practica_2_ad.git
+
 
 # Lectura y limpieza de los datos
 
@@ -201,15 +206,15 @@ data_medicacion <- data %>%
 # Gráfico de cajas
 data_medicacion %>% 
   ggplot(aes(x = medicacion, y = VHI, fill = medicacion)) + 
-  geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2) +
-  geom_boxplot(aes(color = medicacion), width = 0.3, alpha = 0.2)+
+  geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2,trim=FALSE) +
+  geom_boxplot(aes(color = medicacion), width = 0.1, alpha = 0.2)+
   geom_jitter(aes(color = medicacion), alpha = 0.5, 
               show.legend = TRUE, 
               position = position_jitter(width = 0.3, seed = 0)) + 
   scale_x_discrete(labels = c("No", "Sí")) +
-  labs(x = "Consumo de Medicación", y = "Índice de Calidad Vocal (VHI)") +
+  labs(x = "Consum de Medicació", y = "Índex de Qualitat Vocal (VHI)") +
   theme_minimal(base_size = 14) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+scale_color_manual(values = c("#E69F00","#56B4E9"))
 ```
 
 El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
