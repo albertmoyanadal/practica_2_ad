@@ -1,204 +1,276 @@
 ---
-title: "Símptomes vocals en els professors"
-subtitle: "Estudio a equipo docente sobre la voz"
+title: "Síntomas vocales en profesores"
+subtitle: "20582- Análisis de Datos para el GMAT"
 date: today
 format:
   html:
-    theme: darkly
+    theme: lumen
     toc: true
-    toc-depth: 10
-    highlight-style: zenburn
+    toc-depth: 3
 Rendering:
     embed-resources: true
 ---
 
-**Grupo:** TOJUMO
-
-Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch
-
-**Enlace al repositorio de Git-Hub:** [repositorio](https://github.com/albertmoyanadal/practica_2_ad)
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-library("tidyverse")
-data <- read_csv2(file = "data/Salut_Vocal_anonimizada.csv" )
-data <- data %>%
-  select(-ncol(data))
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# install.packages("car")
+library(car)
+library(tidyverse)
+library(readr)
+library(hrbrthemes)
+library(janitor)
+library(viridis)
 ```
 
-## Resum
+# Lectura y limpieza de los datos
 
-El problema general és si la Formació en veu influeix en la percepció de la mateixa.
+Leemos los datos del fichero "Salut_Vocal_anonimizada.csv" y cambiamos los nombres de las variables.
 
-A més, nosaltres ens plantegem la pregunta "Afecta el consum de medicaments a la qualitat de veu dels professors?". Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d'entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents.
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+raw_data <- read.csv("../data/Salut_Vocal_anonimizada.csv",
+                   header=TRUE, sep=";")
 
-## Plantejament del problema
-
-La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: "Mai", "Gairebé Mai", "A vegades, "Gairebé Sempre" i "Sempre". Ho plantejam de la següent manera. A cadascun d'aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: "Score" que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major 'score', menor qualitat de veu i viceversa.
-
-## Anàlisi descriptiu de la base de dades
-
-Feim un petit anàlisi descriptiu de la base de dades: Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l'edat, que és numèrica. Aquí podem visualitzar les dades originals:
-
-```{r}
-data %>% head(5)
-```
-
-## Neteja i de les dades
-
-El primer que feim és modificar els valors mencionats en l'apartat anterior.
-
-1.  Cambiamos los nombres de las columnas:
-
-```{r}
-CNam = c()
- for (i in 1:37){
-   CNam = c(CNam, paste0("col",as.character(i)))
- }
-names(data) = CNam
-
-
-```
-
-2.  Cambiamos los valores de las columnas 28-37 (ambas incluidas)
-
-```{r}
-data <- data %>% 
-  mutate(across(tail(names(data),10), ~case_when(
-    .=='Mai'~0,
-    .=='Gairebé mai' ~1,
-    .=='A vegades'~2,
-    .=='Gairebé sempre'~3,
-    .=='Sempre' ~4)))
-```
-
-3.  Añadimos la columna SCORE:
-
-```{r}
-data <- data %>% 
-  mutate(SCORE = rowSums(across(tail(names(data),10)),
-                         na.rm = TRUE))
-```
-
-## Respondre preguntes
-
-Per respondre les preguntes haurem d'analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents?
-
-Per facilitar el codi canviarem el valor de les posibles respostes:
-
-Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas
-
-```{r}
-sub_data <- data %>% select(col1,col25,SCORE)
-sub_data %>% head(10)
-```
-
-Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:
-
-```{r}
-# Cram un subdata amb la funcio str_count() 
-  
-sub_data2 <- sub_data %>% mutate(
-  No = str_count(sub_data$col25,pattern = 'No'),
-  CortIn = str_count(sub_data$col25,pattern = 'Corticosteroides inhalats'),
-  AntD = str_count(sub_data$col25,pattern = 'Antidepresius'),
-  AntCol = str_count(sub_data$col25, pattern = 'Anticolinérgics'),
-  AspAntI = str_count(sub_data$col25, pattern = 'Aspirina'),
-  IECA = str_count(sub_data$col25, pattern = 'IECA'),
-  Diur = str_count(sub_data$col25, pattern = 'Diurètics'),
-  Clor = str_count(sub_data$col25, pattern = 'Clorpromazina'),
-  LD = str_count(sub_data$col25,pattern = 'L-Dopa'),
-  C = str_count(sub_data$col25, pattern = 'Vitamina C'),
-  Dan = str_count(sub_data$col25, pattern = 'Danazol'),
-  .before = SCORE
+raw_data <- raw_data %>% select(-X) %>% 
+   rename(
+    Importancia_voz = "De.l.1.al.10.quina.importancia.té.la.veu.per.a.vostè.",
+    Sexo = "Sexe",
+    Lugar_trabajo="On.fa.feina.",
+    Cuerpo_docente="Cos.docent",
+    Edad="Quina.edat.té.",
+    Actividas_fisica="Practica.esport.o.fa.alguna.activitat.física.",
+    Importancia_deporte="De.l.1.al.10.quina.importancia.té.la.pràctica.de.l.esport.o.activitat.física.per.a.vostè.",
+    Calidad_sueño="Té.una.bona.qualitat.del.son.",
+    Cafe="Consumeix.cafè.",
+    Tabaco="Consumeix.tabac.",
+    Alcohol="Consumeix.alcohol.",
+    Bebida_gas="Consumeix.begudes.amb.gas.",
+    Dieta_saludable="De..l.1.al.10.assenyali.si.segueix.una.dieta.equilibrada.i.saludable.",
+    Diagnostico="Ha.estat.diagnosticat.per.un.metge.o.metgessa.d.alguna.de.les.malalties.següents.",
+    Patologia="Si.ha.marcat.alguna.de.les.opcions.anterior..especifiqui.la.patologia.",
+    Diagnostico_especialista="Ha.estat.diagnosticat.per.un.especialista.mèdic..otorinolaringòleg..foniatra..d.alguna.lesió.a.les.cordes.vocals.",
+    Sintomas="Aquest.mes.ha.tengut.algún.símptoma.vocal.dels.següents..Es.pot.marcar.més.d.una.opció",
+    Operacion="L.han.operat.de.les.cordes.vocals.",
+    Tiempo_alteracion="Si.té.alguna.alteració.de.la.veu..recorda.quin.temps.fa.que.va.començar.",
+    Baja_voz="En.alguna.ocasió..ha.estat.de.baixa.laboral.per.problemes.de.veu.",
+    Baja_larga="Si.la.resposta.a.la.pregunta.anterior.és.afirmativa..indiqui.la.periodicitat..cada.any..trimestre.....i.la.durada.de.la.baixa.més.llarga.i.la.malaltia",
+    Problema_curso22_23="Ha.tengut.problemes.de.veu.importants.i.que.li.han.dificultat.la.feina.al.llarg.del.curs.2022.2023.",
+    Formacion_voz="Té.formació.sobre.salut.vocal.",
+    Medicacion="Pren.alguna.o.algunes.de.les.medicacions.següents..Es.pot.marcar.més.d.una.opció",
+    Higiene_vocal="Segueix.una.rutina.d.higiene.vocal.",
+    Actividades="Fa.alguna.de.les.activitats.següents..Es.pot.marcar.més.d.una.opció",
+    No_me_ecuchan="La.gent.em.sent.amb.dificultat.a.causa.de.la.meva.veu",
+    No_me_escuchan_ruido="La.gent.no.m.entén.en.llocs.sorollosos",
+    Alteracion_vida_social="Els.meus.problemes.amb.la.veu.alteren.la.meva.vida.personal.i.social",
+    Desplazado_conversacion="Em.sent.desplaçat.de.les.converses.per.la.meva.veu",
+    Rendimiento_laboral="El.meu.problema.amb.la.veu.afecta.el.rendiment.laboral",
+    Tensar_producir_voz="Not.que.necessit.tensar.la.gola..gargamella..per.produir.la.veu",
+    Calidad_imprevisible="La.qualitat.de.la.meva.veu.és.imprevisible",
+    Me_molesta="La.meva.veu.em.molesta",
+    Minusvalia="La.meva.veu.em.fa.sentir.certa.minusvalidesa",
+    Gente_pregunta="La.gent.em.pregunta..què.et.passa.amb.la.veu."
 )
 
+glimpse(raw_data)
+```  
+
+Observamos que hay 185 respuestas y 37 variables. Vamos a limpiar los nombres de las variables y a convertir las variables categóricas en factores, a excepción de las variables "importancia_voz", "importancia_deporte" y "dieta_saludable" que las dejamos como variables cuantitativas discretas.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data <- janitor::clean_names(raw_data) %>% 
+        mutate(across(-c(importancia_voz,
+                         importancia_deporte,
+                         dieta_saludable), as.factor))
+
+glimpse(data)
+
+```  
+
+Ahora, para calcular el índice de calidad de voz (VHI), vamos a seleccionar las variables desde la 28 a la 37 para convertirlas en cuantitativas discretas y a sumarlas para obtener el índice VIH.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data_vhi <- data %>% select(28:37) %>% 
+  mutate(across(everything(), ~case_when(
+     . == "Mai" ~ 0,
+     . == "Gairebé mai" ~ 1,
+     . == "A vegades" ~ 2,
+     . == "Gairebé sempre" ~ 3,
+     . == "Sempre" ~ 4
+   ))
+   )
+
+data_vhi <- data_vhi %>% mutate(VHI=rowSums(data_vhi))
+
+glimpse(data_vhi) 
 ```
 
-```{r, echo=FALSE}
-# Cream el mateix subdata amb la funció str_detect()
-sub_data3 <- sub_data %>% mutate(
+Por último, vamos a añadir la variable VHI al dataframe original y a eliminar las variables de la 28 a la 37.
+
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
+data <- data %>% select(-c(28:37))%>% 
+   bind_cols(VHI=data_vhi$VHI)
+glimpse(data) 
+```
+
+
+
+
+# Análisis de la Influencia de la Medicación en la Calidad de la Voz.
+
+**Grupo: ToJuMo (Melcion Ciudad, Albert Moya, Miquel Àngel Llauger)**
+
+### Introducción
+
+El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.
+
+Realizaremos un contraste de hipótesis, recordemos que en un contraste de hipótesis podemos rechazar o no nuestra hipótesis nula. Esto último no implica la aceptación.
+
+### Análisis Por Medicamentos
+
+Para nuestro contraste de hipótesis nos gustaría hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}$. I suponer como hipótesis nula que los medicamentos no suponen una variación en la calidad vocal.
+
+\begin{align}
+  &H_0 = \{ \mu_0 = \mu_1 = \ldots = \mu_{n-1}  \} \\
+  &H_1 = \{ \exists i,j \ \ \ t.q. \ \ \mu_i \ne \mu_j\} 
   
-  No = if_else(str_detect(sub_data$col25,pattern = 'No'),'No','Si'),
-  CortIn = if_else(str_detect(sub_data$col25,pattern = 'Corticosteroides inhalats'),'Cort','No'),
-  AntD = if_else(str_detect(sub_data$col25,pattern = 'Antidepresius'),'AntD','No'),
-  AntCol = if_else(str_detect(sub_data$col25, pattern = 'Anticolinérgics'),'AntCol','No'),
-  AspAntI = if_else(str_detect(sub_data$col25, pattern = 'Aspirina'),'AspAntI','No'),
-  IECA = if_else(str_detect(sub_data$col25, pattern = 'IECA'),'IECA','No'),
-  Diur = if_else(str_detect(sub_data$col25, pattern = 'Diurètics'),'Diur','No'),
-  Clor = if_else(str_detect(sub_data$col25, pattern = 'Clorpromazina'),'Clor','No'),
-  LD = if_else(str_detect(sub_data$col25,pattern = 'L-Dopa'),'L-Dopa','No'),
-  C = if_else(str_detect(sub_data$col25, pattern = 'Vitamina C'),'C','No'),
-  Dan = if_else(str_detect(sub_data$col25, pattern = 'Danazol'),'Dan','No'),
-  .before = SCORE
-  )
+\end{align}
 
+Notemos que $H_1$ es equivalente a concluir que tomar medicamentos influye en la calidad de la voz. Observemos la siguiente gráfica de los medicamentos:
 
-```
+```{r,echo=FALSE,warning=FALSE}
 
-Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d'un medicament.
+dat_graf_2 <- data %>% select(medicacion,VHI)
+names(dat_graf_2) = c("col25","qualitat_veu")
 
-Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.
+dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
+  col25=="Corticosteroides inhalats"~"1",
+  col25=="Antidepressius (fluoxetina i amitriptilina)"~"2",
+  col25=="Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)"~"3",
+  col25=="Aspirina i antiinflamatoris no esteroideus"~"4",
+  col25=="IECA (enalpapril, ramipril, captopril...)"~"5",
+  col25== "Diurètics (espirolactona, furosemida)"~"6",
+  col25=="Clorpromazina"~"7",
+  col25=="L-Dopa"~"8",
+  col25=="Vitamina C"~"9",
+  col25=="Danazol"~"10",
+  col25=="No"~"No",
+  TRUE~"Varis"
+  
+))
 
-```{r}
-dat_si_no <- sub_data3 %>% select(No,SCORE)
-names(dat_si_no) <- c('Pren_algun_medicament', 'Qualitat')
-
-
-ggplot(data=dat_si_no, aes(x = Pren_algun_medicament,y=Qualitat))+geom_boxplot(aes(color=Pren_algun_medicament),width=0.3)+
-  geom_jitter(aes(color = Pren_algun_medicament), alpha = 0.5, 
-              show.legend = TRUE, 
-              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("No","Si"))+
-  labs(x = "Medicaments", y = "Qualitat de la veu")+
+ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=col25),width=0.3,show.legend = FALSE)+
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = FALSE,
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
+  labs(y = "VHI")+xlab("Medicaments")+ggtitle('VHI por Medicamentos')+
 theme(
     axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
-
 ```
 
-Podem observar que els dos boxplot es superposen i tenen mitja igual, a més de que tenim molt poques observacions a pren algun medicament (manco de 40):
+Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias.  Para evaluar si existe alguna medicación específica que influya en la calidad de la voz, se realiza un **test de Kruskal-Wallis**, un análisis no paramétrico, ya que no podemos asumir la normalidad, que permite comparar más de dos grupos. La elección de este test se ha hecho debido a que ningún medicamento sigue una distribución normal.
 
-```{r}
-length(dat_si_no %>% select(Pren_algun_medicament) %>% filter(Pren_algun_medicament =='Si') %>% .$Pren_algun_medicament)
+```{r, echo=FALSE, warning=FALSE}
+# Test de Kruskal-Wallis
+kruskal.test(VHI ~ medicacion, data = data)
 ```
 
-Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.
+Los resultados del test de Kruskal-Wallis también muestran un p-valor suficientemente superior a $0.05$, lo que sugiere que no hay diferencias significativas entre los diferentes tipos de medicación y no tomar ninguna medicación.
 
-```{r}
-dat_graf_2 <- tibble(
-  Medicament = c(),
-  Qualitat_veu = c()
-)
-Nobres <- sub_data3 %>% select(4:13) %>% names()
-for (i in 1:10){
-  D <- sub_data3[c(Nobres[i], 'SCORE')]
-  names(D) <- c('Medicament','Qualitat_veu')
-  D <- D %>% filter(Medicament != 'No')
-  dat_graf_2 <- rbind(dat_graf_2,D)
-}
 
-```
+### Toma Medicación VS No Toma Medicación
 
-Graficam la mitjana del SCORE en funció del medicament que prèn:
+Ahora lo que haremos serà semparar nuestra variable cualitativa (Medicamentos)  en dos grupos: profesores que toman medicación y los que no. 
 
-```{r}
-ggplot(data=dat_graf_2, aes(x = Medicament,y=Qualitat_veu))+geom_boxplot(aes(color=Medicament),width=0.3)+
-  geom_jitter(aes(color = Medicament), alpha = 0.5, 
+Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:
+
+\begin{align}
+H_0 = \{\mu_1 = \mu_0\} \\
+H_1 = \{\mu_1 \ne \mu_0 \}
+\begin{align}
+
+Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman. Esto lo podriamos contrastar sí nuestras variables siguen una distribución normal.
+
+A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.
+
+
+```{r, echo=FALSE, warning=FALSE}
+# Separación por consumo de medicación
+data_medicacion <- data %>% 
+  select(id, VHI, medicacion) %>% 
+  mutate(medicacion = if_else(medicacion == "No", "No", "Sí"))
+
+# Gráfico de cajas
+data_medicacion %>% 
+  ggplot(aes(x = medicacion, y = VHI, fill = medicacion)) + 
+  geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2) +
+  geom_boxplot(aes(color = medicacion), width = 0.3, alpha = 0.2)+
+  geom_jitter(aes(color = medicacion), alpha = 0.5, 
               show.legend = TRUE, 
-              position = position_jitter(width = 0.3, seed = 0))
-
-```
-<<<<<<< HEAD
-
-```{r}
-
+              position = position_jitter(width = 0.3, seed = 0)) + 
+  scale_x_discrete(labels = c("No", "Sí")) +
+  labs(x = "Consumo de Medicación", y = "Índice de Calidad Vocal (VHI)") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-=======
-Seria lògic demanar-se si podem inferir qualque cosa a partir d'aquest gràfic. És a dir, si un dels medicaments dona uns resultats més o menys elevats que la resta. Això ho podem fer amb un test de variàncies ANOVA: 
-```{r,echo=FALSE}
-dat_graf_2<-na.omit(dat_graf_2)
-summary(dat_graf_2$Medicament)
-summary(aov(Qualitat_veu~Medicament, dat_graf_2))
+El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
+
+Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma.  Así, veamos si podemos generalizar el análisis anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
+
+Realizamos un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal. También podemos observarlo con las  gráficas cuantil-cuantil comparando con una normal.
+
+En la gráfica la recta roja es la recta $y = x$, los puntos nos relacionan los cuantiles de nuestra muestra con los cuantiles de la normal. La región roja muestra el área donde si están nuestros puntos cuantil-cuantil podemos intuir que puedan seguir esa distribución.
+
+```{r, echo=FALSE, warning=FALSE}
+# Enquestats que no prenen medicació
+no_medicacion <- data_medicacion %>% 
+  filter(medicacion == "No")
+muestra2 = no_medicacion$VHI
+M2 = mean(muestra2)
+SD2 = sqrt(var(muestra2))
+xl = paste0('Cuantiles N(',sprintf("%.2f",M2),', ',sprintf("%.2f",SD2),')')
+qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, No toma medicación', xlab = xl, ylab = 'Cuantiles VHI, sin medicación', grid = FALSE)
+
+
+
+shapiro.test(no_medicacion$VHI)
+
+
+# Enquestats que sí prenen medicació
+si_medicacion <- data_medicacion %>% 
+  filter(medicacion == "Sí")
+
+muestra = si_medicacion$VHI
+M = mean(muestra)
+SD = sqrt(var(muestra))
+xl2 = paste0('Cuantiles N(',sprintf("%.2f",M),', ',sprintf("%.2f",SD),')')
+qqPlot(muestra, distribution="norm", mean = M, sd = SD, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, Si toma medicación',xlab = xl2, ylab = 'Cuantiles VHI, con medicación')
+
+
+# Prueba de normalidad
+
+shapiro.test(si_medicacion$VHI)
+
 ```
-Però, amb un p-valor de 0.182, tenim que no podem treure conclusions a partir d'aquí. 
->>>>>>> ebed79cbc01d6fce36734e516b5bc22eb72136e5
-## Conclusions
+
+El resultado del test nos ha dado un p-valor de $1.62\times10^{-7}$ para los no medicados y de $3.738\times10^{-5}$ pera los medicados. Como el p-valor es mucho menor que $0.05$ en ambos casos podemos decir que no siguen una distribución normal. 
+
+Por tanto, haremos un test no paramétrico para determinar si siguen la misma distribución. En este caso aremos el **test de Kruskal-Wallis**:
+
+
+
+```{r, echo=FALSE, warning=FALSE}
+# Test no paramétrico de Kruskal-Wallis
+kruskal.test(VHI ~ medicacion, data = data_medicacion)
+```
+
+ Los resultados del test de Wilcoxon no muestran diferencias significativas entre los dos grupos (p-valor $> 0.05$), sugiriendo que el consumo de medicación no está asociado con diferencias significativas en la calidad de la voz ya que siguen la misma distribución.
+ 
+
+
+
+### Conclusión
+
+Los resultados de este estudio no muestran una asociación significativa entre el consumo de medicación y la calidad de la voz en profesores. Sin embargo, este resultado debe interpretarse con cautela, ya que la medicación podría estar siendo utilizada como una medida correctiva después de haber sufrido problemas vocales, en lugar de como una medida preventiva. 
+
+Un análisis más profundo que incluya datos sobre la calidad de la voz antes y después del inicio del tratamiento con medicación sería necesario para obtener conclusiones más sólidas sobre su impacto real en la calidad vocal.
+

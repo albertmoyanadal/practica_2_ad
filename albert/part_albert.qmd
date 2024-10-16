@@ -11,8 +11,10 @@ Rendering:
     embed-resources: true
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# install.packages("car")
+library(car)
 library(tidyverse)
 library(readr)
 library(hrbrthemes)
@@ -20,11 +22,11 @@ library(janitor)
 library(viridis)
 ```
 
-## Lectura y limpieza de los datos
+# Lectura y limpieza de los datos
 
 Leemos los datos del fichero "Salut_Vocal_anonimizada.csv" y cambiamos los nombres de las variables.
 
-```{r}
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 raw_data <- read.csv("../data/Salut_Vocal_anonimizada.csv",
                    header=TRUE, sep=";")
 
@@ -73,7 +75,7 @@ glimpse(raw_data)
 
 Observamos que hay 185 respuestas y 37 variables. Vamos a limpiar los nombres de las variables y a convertir las variables categóricas en factores, a excepción de las variables "importancia_voz", "importancia_deporte" y "dieta_saludable" que las dejamos como variables cuantitativas discretas.
 
-```{r}
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 data <- janitor::clean_names(raw_data) %>% 
         mutate(across(-c(importancia_voz,
                          importancia_deporte,
@@ -85,7 +87,7 @@ glimpse(data)
 
 Ahora, para calcular el índice de calidad de voz (VHI), vamos a seleccionar las variables desde la 28 a la 37 para convertirlas en cuantitativas discretas y a sumarlas para obtener el índice VIH.
 
-```{r}
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 data_vhi <- data %>% select(28:37) %>% 
   mutate(across(everything(), ~case_when(
      . == "Mai" ~ 0,
@@ -103,133 +105,172 @@ glimpse(data_vhi)
 
 Por último, vamos a añadir la variable VHI al dataframe original y a eliminar las variables de la 28 a la 37.
 
-```{r}
+```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
 data <- data %>% select(-c(28:37))%>% 
    bind_cols(VHI=data_vhi$VHI)
 glimpse(data) 
 ```
 
 
-## P1: ¿Los profesores dan menos importancia a la voz que al deporte o alimentación?
-
-**Grupo: joan_camps (Joan, Gerard y Miki)**
 
 
-## P2: ¿Hay mayor incidencia de síntomas vocales en maestras de infantil?
+# Análisis de la Influencia de la Medicación en la Calidad de la Voz.
 
-**Grupo: rebm (Rebeca, Eulalia, Biel, Marc)**
+**Grupo: ToJuMo (Melcion Ciudad, Albert Moya, Miquel Àngel Llauger)**
 
-## P3: ¿Hay alguna edad con mayor incidencia de síntomas vocales?
+### Introducción
 
-**Grupo: los_angeles (Sergio,Àngela, Jaume)**
+El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.
 
+Realizaremos un contraste de hipótesis, recordemos que en un contraste de hipótesis podemos rechazar o no nuestra hipótesis nula. Esto último no implica la aceptación.
 
-## P4: ¿Qué factores influyen en una mala calidad de voz? Café, tabaco, alcohol, bebidas con gas, etc
+### Análisis Por Medicamentos
 
-**Grupo: el_cid: Carlos,Irene, Didac**
+Para nuestro contraste de hipótesis nos gustaría hacer un contraste de medias. Es decir que cada medicamento tiene una media $\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}$. I suponer como hipótesis nula que los medicamentos no suponen una variación en la calidad vocal.
 
+\begin{align}
+  &H_0 = \{ \mu_0 = \mu_1 = \ldots = \mu_{n-1}  \} \\
+  &H_1 = \{ \exists i,j \ \ \ t.q. \ \ \mu_i \ne \mu_j\} 
+  
+\end{align}
 
-## P5: ¿Hay alguna enfermedad que influya en la calidad de la voz? EPOC, reflujo, endocrina, cardio-vascular, etc
+Notemos que $H_1$ es equivalente a concluir que tomar medicamentos influye en la calidad de la voz. Observemos la siguiente gráfica de los medicamentos:
 
-**Grupo tulipanes_alirios: Biel, Carlos, Javi**
+```{r,echo=FALSE,warning=FALSE}
 
-## P6: ¿Hay más bajas por tema de voz al principio del curso?
+dat_graf_2 <- data %>% select(medicacion,VHI)
+names(dat_graf_2) = c("col25","qualitat_veu")
 
+dat_graf_2<-dat_graf_2 %>% mutate(col25=case_when(
+  col25=="Corticosteroides inhalats"~"1",
+  col25=="Antidepressius (fluoxetina i amitriptilina)"~"2",
+  col25=="Anticolinérgics (broncodilatadors, antihistamínics, antidepressius)"~"3",
+  col25=="Aspirina i antiinflamatoris no esteroideus"~"4",
+  col25=="IECA (enalpapril, ramipril, captopril...)"~"5",
+  col25== "Diurètics (espirolactona, furosemida)"~"6",
+  col25=="Clorpromazina"~"7",
+  col25=="L-Dopa"~"8",
+  col25=="Vitamina C"~"9",
+  col25=="Danazol"~"10",
+  col25=="No"~"No",
+  TRUE~"Varis"
+  
+))
 
-
-## P7: ¿El cuidado de voz mejora la calidad de la misma? ¿Cuál es la mejor medida?
-
-**Grupo escuderia_ferrrari: Álvaro, Dardos, Miquel**
-
-
-# P8: ¿Hay alguna medicación que influya en la calidad de la voz?
-
-**Grupo: tojumo (Melción, Albert, Miquel Angelo)**
-
-Primero veamos si hay alguna diferencia notable entre la gente que toma medicación y la gente que no toma. Para ello haremos un grafico de cajas donde separaremos entre gente que toma medicación y gente que no toma y evaluaremos segun su VHI, que recordemos, como mayor VHI, menor calidad de voz.
-
-```{r}
-# Separam la gent que pren medicació entre si en pren o no
-data_medicacion <- data %>% select(id, VHI, medicacion) %>% 
-  mutate(medicacion = if_else(medicacion == "No", 
-                                           "No", 
-                                           "Sí"))
-
-# Imprimim els resultats amb un gràfic 
-data_medicacion %>% 
-ggplot(aes(x = medicacion, y = VHI)) + 
-  geom_boxplot(aes(color = medicacion), width = 0.3) +
-  geom_jitter(aes(color = medicacion), alpha = 0.5, 
-              show.legend = TRUE, 
-              position = position_jitter(width = 0.3, seed = 0)) + 
-  scale_x_discrete(labels = c("No", "Sí"))+
-  labs(x = "Pren medicació", y = "Qualitat de la veu")+
+ggplot(data=dat_graf_2, aes(x = col25,y=qualitat_veu))+geom_boxplot(aes(color=col25),width=0.3,show.legend = FALSE)+
+  geom_jitter(aes(color = col25), alpha = 0.5, 
+              show.legend = FALSE,
+              position = position_jitter(width = 0.3, seed = 0))+scale_x_discrete(labels=c("Corticosteroides","Antidepressius","Anticolinérgics","Aspirina","IECA","Vitamina C","No","Varis"))+
+  labs(y = "VHI")+xlab("Medicaments")+ggtitle('VHI por Medicamentos')+
 theme(
     axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 ```
 
-Como podemos ver en esta gráfica, las dos poblaciones siguen una distribución parecida, a pesar de que haya más gente que no toma medicación y menos gente que si que toma. Como podemos observar, los casos más estremos, con peor VHI (o calidad de voz) pertenecen a la gente que toma medicación. Este suceso se puede explicar si suponemos que la gente toma medicación cuando ya ha sufrido el daño y no para prevenir y cuidar.
+Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias.  Para evaluar si existe alguna medicación específica que influya en la calidad de la voz, se realiza un **test de Kruskal-Wallis**, un análisis no paramétrico, ya que no podemos asumir la normalidad, que permite comparar más de dos grupos. La elección de este test se ha hecho debido a que ningún medicamento sigue una distribución normal.
+
+```{r, echo=FALSE, warning=FALSE}
+# Test de Kruskal-Wallis
+kruskal.test(VHI ~ medicacion, data = data)
+```
+
+Los resultados del test de Kruskal-Wallis también muestran un p-valor suficientemente superior a $0.05$, lo que sugiere que no hay diferencias significativas entre los diferentes tipos de medicación y no tomar ninguna medicación.
 
 
-Hagamos un poco de estadística descriptiva para ver si siguen la misma districución de datos:
+### Toma Medicación VS No Toma Medicación
+
+Ahora lo que haremos serà semparar nuestra variable cualitativa (Medicamentos)  en dos grupos: profesores que toman medicación y los que no. 
+
+Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:
+
+\begin{align}
+H_0 = \{\mu_1 = \mu_0\} \\
+H_1 = \{\mu_1 \ne \mu_0 \}
+\begin{align}
+
+Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman. Esto lo podriamos contrastar sí nuestras variables siguen una distribución normal.
+
+A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.
 
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
+# Separación por consumo de medicación
+data_medicacion <- data %>% 
+  select(id, VHI, medicacion) %>% 
+  mutate(medicacion = if_else(medicacion == "No", "No", "Sí"))
+
+# Gráfico de cajas
+data_medicacion %>% 
+  ggplot(aes(x = medicacion, y = VHI, fill = medicacion)) + 
+  geom_violin(aes(color = medicacion), width = 0.3, alpha = 0.2) +
+  geom_boxplot(aes(color = medicacion), width = 0.3, alpha = 0.2)+
+  geom_jitter(aes(color = medicacion), alpha = 0.5, 
+              show.legend = TRUE, 
+              position = position_jitter(width = 0.3, seed = 0)) + 
+  scale_x_discrete(labels = c("No", "Sí")) +
+  labs(x = "Consumo de Medicación", y = "Índice de Calidad Vocal (VHI)") +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.
+
+Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma.  Así, veamos si podemos generalizar el análisis anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población. 
+
+Realizamos un análisis de normalidad con el test de **Shapiro-Wilk** para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal. También podemos observarlo con las  gráficas cuantil-cuantil comparando con una normal.
+
+En la gráfica la recta roja es la recta $y = x$, los puntos nos relacionan los cuantiles de nuestra muestra con los cuantiles de la normal. La región roja muestra el área donde si están nuestros puntos cuantil-cuantil podemos intuir que puedan seguir esa distribución.
+
+```{r, echo=FALSE, warning=FALSE}
 # Enquestats que no prenen medicació
 no_medicacion <- data_medicacion %>% 
   filter(medicacion == "No")
+muestra2 = no_medicacion$VHI
+M2 = mean(muestra2)
+SD2 = sqrt(var(muestra2))
+xl = paste0('Cuantiles N(',sprintf("%.2f",M2),', ',sprintf("%.2f",SD2),')')
+qqPlot(muestra2, distribution="norm", mean = mean(muestra2), sd = sqrt(var(muestra2)), id=FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, No toma medicación', xlab = xl, ylab = 'Cuantiles VHI, sin medicación', grid = FALSE)
 
-mean(no_medicacion$VHI)
-median(no_medicacion$VHI)
-sd(no_medicacion$VHI)
+
+
+shapiro.test(no_medicacion$VHI)
+
 
 # Enquestats que sí prenen medicació
 si_medicacion <- data_medicacion %>% 
   filter(medicacion == "Sí")
 
-mean(si_medicacion$VHI)
-median(si_medicacion$VHI)
-sd(si_medicacion$VHI)
-```
+muestra = si_medicacion$VHI
+M = mean(muestra)
+SD = sqrt(var(muestra))
+xl2 = paste0('Cuantiles N(',sprintf("%.2f",M),', ',sprintf("%.2f",SD),')')
+qqPlot(muestra, distribution="norm", mean = M, sd = SD, id=FALSE , grid = FALSE,col = carPalette()[1], col.lines = carPalette()[8], main = 'Relación cuantiles con una normal, Si toma medicación',xlab = xl2, ylab = 'Cuantiles VHI, con medicación')
 
-Como podemos ver, los datos siguen una distribución muy similar (que ya podiamos intuir en el gráfico de cajas). Veamos si los datos muestran diferencias entre distribuciones con los siguientes test:
 
+# Prueba de normalidad
 
-```{r}
-# Comprovamos si los datos siguen una distribución normal
-shapiro.test(no_medicacion$VHI)
 shapiro.test(si_medicacion$VHI)
 
-# Com les dades NO són normals
-wilcox.test(VHI ~ medicacion, data = data_medicacion)
-
-# Test ANOVA, no paramètric
-kruskal.test(VHI ~ medicacion, data = data)
-
 ```
 
-El primer test lo utilizamos simplemente para saber si siguen una distribución normal los datos y saber que test podemos utilizar después. 
+El resultado del test nos ha dado un p-valor de $1.62\times10^{-7}$ para los no medicados y de $3.738\times10^{-5}$ pera los medicados. Como el p-valor es mucho menor que $0.05$ en ambos casos podemos decir que no siguen una distribución normal. 
 
-El segundo test, el `wilconox rank sum test` nos dice que no hay diferencias significativas entre las dos distribuciones del principio, profesores que no toman medicación y profesores que sí, ya que el p-valor es mayor a $0.05$.
-
-Hagamos un último test para ver si hay algun medicamento en concreto que se escapa de estas distribuciones, con el resultado superior a $0.05$ del `kruskal test` observamos que ningun medicamento sigue una distribución diferente a no tomar medicamentos. 
-
-Por tanto, podemos concluir que ningún medicamento influye en la calidad de la voz. Aunque este dato puede ser mal interpretado por los datos que tenemos. Por ejemplo, podria ser que la gente que tuviese mala calidad de voz haya decidio tomar medicamento,en canvio la gente "sana" no. Para sacar conclusiones más certeras seria necesario repetir la encuesta antes y después de la medicación para poder observar la evolución del medicamento.
+Por tanto, haremos un test no paramétrico para determinar si siguen la misma distribución. En este caso aremos el **test de Kruskal-Wallis**:
 
 
 
+```{r, echo=FALSE, warning=FALSE}
+# Test no paramétrico de Kruskal-Wallis
+kruskal.test(VHI ~ medicacion, data = data_medicacion)
+```
 
-## Extra: ¿Hay algún trabajo con uso profesional de la voz, además de dar clase, que haga tener mejor calidad de la voz?
-
-No asignada
-
-## Objetivo: 
-
-**¿La formación en voz influye en la percepción de calidad de la misma?**
-
-¿Ideas?
+ Los resultados del test de Wilcoxon no muestran diferencias significativas entre los dos grupos (p-valor $> 0.05$), sugiriendo que el consumo de medicación no está asociado con diferencias significativas en la calidad de la voz ya que siguen la misma distribución.
+ 
 
 
 
+### Conclusión
 
+Los resultados de este estudio no muestran una asociación significativa entre el consumo de medicación y la calidad de la voz en profesores. Sin embargo, este resultado debe interpretarse con cautela, ya que la medicación podría estar siendo utilizada como una medida correctiva después de haber sufrido problemas vocales, en lugar de como una medida preventiva. 
+
+Un análisis más profundo que incluya datos sobre la calidad de la voz antes y después del inicio del tratamiento con medicación sería necesario para obtener conclusiones más sólidas sobre su impacto real en la calidad vocal.
 
