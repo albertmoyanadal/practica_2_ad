@@ -27,7 +27,7 @@ library(viridis)
 Leemos los datos del fichero "Salut_Vocal_anonimizada.csv" y cambiamos los nombres de las variables.
 
 ```{r, include=FALSE, echo=FALSE, warning=FALSE, message=FALSE}
-raw_data <- read.csv("../data/Salut_Vocal_anonimizada.csv",
+raw_data <- read.csv("data/Salut_Vocal_anonimizada.csv",
                    header=TRUE, sep=";")
 
 raw_data <- raw_data %>% select(-X) %>% 
@@ -183,9 +183,9 @@ Ahora lo que haremos serà semparar nuestra variable cualitativa (Medicamentos) 
 Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:
 
 \begin{align}
-H_0 = \{\mu_1 = \mu_0\} \\
-H_1 = \{\mu_1 \ne \mu_0 \}
-\begin{align}
+  & H_0 = \{\mu_1 = \mu_0\} \\
+  & H_1 = \{\mu_1 \ne \mu_0 \}
+\end{align}
 
 Donde $\mu_0$ representa la media del VHI para la población que no toma medicamentos y $\mu_1$ para los que si toman. Esto lo podriamos contrastar sí nuestras variables siguen una distribución normal.
 

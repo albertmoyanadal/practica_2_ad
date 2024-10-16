@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-10-09">
+<meta name="dcterms.date" content="2024-10-16">
 
-<title>Símptomes vocals en els professors</title>
+<title>Síntomas vocales en profesores</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,11 +30,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="practica_2_ad_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="practica_2_ad_files/libs/quarto-html/anchor.min.js"></script>
 <link href="practica_2_ad_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="practica_2_ad_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="practica_2_ad_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="practica_2_ad_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="practica_2_ad_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="practica_2_ad_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="practica_2_ad_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -80,11 +75,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#resum" id="toc-resum" class="nav-link active" data-scroll-target="#resum">Resum</a></li>
-  <li><a href="#plantejament-del-problema" id="toc-plantejament-del-problema" class="nav-link" data-scroll-target="#plantejament-del-problema">Plantejament del problema</a></li>
-  <li><a href="#anàlisi-descriptiu-de-la-base-de-dades" id="toc-anàlisi-descriptiu-de-la-base-de-dades" class="nav-link" data-scroll-target="#anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</a></li>
-  <li><a href="#neteja-i-de-les-dades" id="toc-neteja-i-de-les-dades" class="nav-link" data-scroll-target="#neteja-i-de-les-dades">Neteja i de les dades</a></li>
-  <li><a href="#respondre-preguntes" id="toc-respondre-preguntes" class="nav-link" data-scroll-target="#respondre-preguntes">Respondre preguntes</a></li>
+  <li><a href="#lectura-y-limpieza-de-los-datos" id="toc-lectura-y-limpieza-de-los-datos" class="nav-link active" data-scroll-target="#lectura-y-limpieza-de-los-datos">Lectura y limpieza de los datos</a></li>
+  <li><a href="#análisis-de-la-influencia-de-la-medicación-en-la-calidad-de-la-voz." id="toc-análisis-de-la-influencia-de-la-medicación-en-la-calidad-de-la-voz." class="nav-link" data-scroll-target="#análisis-de-la-influencia-de-la-medicación-en-la-calidad-de-la-voz.">Análisis de la Influencia de la Medicación en la Calidad de la Voz.</a>
+  <ul class="collapse">
+  <li><a href="#introducción" id="toc-introducción" class="nav-link" data-scroll-target="#introducción">Introducción</a></li>
+  <li><a href="#análisis-por-medicamentos" id="toc-análisis-por-medicamentos" class="nav-link" data-scroll-target="#análisis-por-medicamentos">Análisis Por Medicamentos</a></li>
+  <li><a href="#toma-medicación-vs-no-toma-medicación" id="toc-toma-medicación-vs-no-toma-medicación" class="nav-link" data-scroll-target="#toma-medicación-vs-no-toma-medicación">Toma Medicación VS No Toma Medicación</a></li>
+  <li><a href="#conclusión" id="toc-conclusión" class="nav-link" data-scroll-target="#conclusión">Conclusión</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -92,8 +90,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Símptomes vocals en els professors</h1>
-<p class="subtitle lead">Estudio a equipo docente sobre la voz</p>
+<h1 class="title">Síntomas vocales en profesores</h1>
+<p class="subtitle lead">20582- Análisis de Datos para el GMAT</p>
 </div>
 
 
@@ -104,7 +102,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 9, 2024</p>
+      <p class="date">October 16, 2024</p>
     </div>
   </div>
   
@@ -116,133 +114,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><strong>Grupo:</strong> TOJUMO</p>
-<p>Albert Moyà Nadal, Miquel Àngel Llauger Suau i Melcion Ciudad Bosch</p>
-<p><strong>Enlace al repositorio de Git-Hub:</strong> <a href="https://github.com/albertmoyanadal/practica_2_ad">repositorio</a></p>
-<section id="resum" class="level2">
-<h2 class="anchored" data-anchor-id="resum">Resum</h2>
-<p>El problema general és si la Formació en veu influeix en la percepció de la mateixa.</p>
-<p>A més, nosaltres ens plantegem la pregunta “Afecta el consum de medicaments a la qualitat de veu dels professors?”. Veurem que cap dels medicaments consumits pels docents té una mitjana significativament diferent de cap altre. I d’entre els que consumeixen medicaments i els que no ho fan, tampoc NO hi ha diferències importants. És a dir, veim que no hi ha una relació clara entre el consum de medicaments i la qualitat de la veu dels docents.</p>
+<section id="lectura-y-limpieza-de-los-datos" class="level1">
+<h1>Lectura y limpieza de los datos</h1>
+<p>Leemos los datos del fichero “Salut_Vocal_anonimizada.csv” y cambiamos los nombres de las variables.</p>
+<p>Observamos que hay 185 respuestas y 37 variables. Vamos a limpiar los nombres de las variables y a convertir las variables categóricas en factores, a excepción de las variables “importancia_voz”, “importancia_deporte” y “dieta_saludable” que las dejamos como variables cuantitativas discretas.</p>
+<p>Ahora, para calcular el índice de calidad de voz (VHI), vamos a seleccionar las variables desde la 28 a la 37 para convertirlas en cuantitativas discretas y a sumarlas para obtener el índice VIH.</p>
+<p>Por último, vamos a añadir la variable VHI al dataframe original y a eliminar las variables de la 28 a la 37.</p>
 </section>
-<section id="plantejament-del-problema" class="level2">
-<h2 class="anchored" data-anchor-id="plantejament-del-problema">Plantejament del problema</h2>
-<p>La qualitat de la veu dels docents està avaluada en 10 preguntes amb possibles respostes: “Mai”, “Gairebé Mai”, “A vegades,”Gairebé Sempre” i “Sempre”. Ho plantejam de la següent manera. A cadascun d’aquestes situacions li assignem un valor numèric natural del 0 al 4, llavors crearem una nova variable: “Score” que prendrà valors entre 0-40 i serà el nostre indicador de qualitat de veu sobre el qual farem feina. A major ‘score’, menor qualitat de veu i viceversa.</p>
+<section id="análisis-de-la-influencia-de-la-medicación-en-la-calidad-de-la-voz." class="level1">
+<h1>Análisis de la Influencia de la Medicación en la Calidad de la Voz.</h1>
+<p><strong>Grupo: ToJuMo (Melcion Ciudad, Albert Moya, Miquel Àngel Llauger)</strong></p>
+<section id="introducción" class="level3">
+<h3 class="anchored" data-anchor-id="introducción">Introducción</h3>
+<p>El objetivo de este análisis es evaluar si el consumo de medicación tiene algún efecto sobre la calidad de la voz en profesores, medida a través del índice de calidad vocal (VHI, por sus siglas en inglés). Un VHI más alto indica una menor calidad de voz, por lo que se compararán los valores del índice entre quienes toman medicación y quienes no lo hacen.</p>
+<p>Realizaremos un contraste de hipótesis, recordemos que en un contraste de hipótesis podemos rechazar o no nuestra hipótesis nula. Esto último no implica la aceptación.</p>
 </section>
-<section id="anàlisi-descriptiu-de-la-base-de-dades" class="level2">
-<h2 class="anchored" data-anchor-id="anàlisi-descriptiu-de-la-base-de-dades">Anàlisi descriptiu de la base de dades</h2>
-<p>Feim un petit anàlisi descriptiu de la base de dades: Tenim un dataset amb 185 observacions, això és, 185 docents sotmesos al qüestionari. Amb 38 preguntes obtenim 38 variables, gairebé totes qualitatives excepte l’edat, que és numèrica. Aquí podem visualitzar les dades originals:</p>
+<section id="análisis-por-medicamentos" class="level3">
+<h3 class="anchored" data-anchor-id="análisis-por-medicamentos">Análisis Por Medicamentos</h3>
+<p>Para nuestro contraste de hipótesis nos gustaría hacer un contraste de medias. Es decir que cada medicamento tiene una media <span class="math inline">\(\mu_i \ \ t.q. \ i \in \{0,1,2,\ldots,n-1\}\)</span>. I suponer como hipótesis nula que los medicamentos no suponen una variación en la calidad vocal.</p>
+<p><span class="math display">\[\begin{align}
+  &amp;H_0 = \{ \mu_0 = \mu_1 = \ldots = \mu_{n-1}  \} \\
+  &amp;H_1 = \{ \exists i,j \ \ \ t.q. \ \ \mu_i \ne \mu_j\}
+  
+\end{align}\]</span></p>
+<p>Notemos que <span class="math inline">\(H_1\)</span> es equivalente a concluir que tomar medicamentos influye en la calidad de la voz. Observemos la siguiente gráfica de los medicamentos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practica_2_ad_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Como podemos observar en los puntos hay pocas observaciones para realizar tests de normalidad y poder hacer contraste de medias. Para evaluar si existe alguna medicación específica que influya en la calidad de la voz, se realiza un <strong>test de Kruskal-Wallis</strong>, un análisis no paramétrico, ya que no podemos asumir la normalidad, que permite comparar más de dos grupos. La elección de este test se ha hecho debido a que ningún medicamento sigue una distribución normal.</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 37
-     ID De l'1 al 10 quina importancia té la…¹ Sexe  `On fa feina?` `Cos docent`
-  &lt;dbl&gt;                                  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;       
-1     1                                     10 Feme… Palma, Llucma… Formació Pr…
-2     2                                     10 Feme… Palma, Llucma… Educació Se…
-3     3                                     10 Masc… Inca, Sa Pobl… Educació Se…
-4     4                                     10 Feme… Palma, Llucma… Educació Se…
-5     5                                     10 Feme… Palma, Llucma… Educació Se…
-# ℹ abbreviated name: ¹​`De l'1 al 10 quina importancia té la veu per a vostè?`
-# ℹ 32 more variables: `Quina edat té?` &lt;chr&gt;,
-#   `Practica esport o fa alguna activitat física?` &lt;chr&gt;,
-#   `De l'1 al 10 quina importancia té la pràctica de l'esport o activitat física per a vostè?` &lt;dbl&gt;,
-#   `Té una bona qualitat del son?` &lt;chr&gt;, `Consumeix cafè?` &lt;chr&gt;,
-#   `Consumeix tabac?` &lt;chr&gt;, `Consumeix alcohol?` &lt;chr&gt;,
-#   `Consumeix begudes amb gas?` &lt;chr&gt;, …</code></pre>
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  VHI by medicacion
+Kruskal-Wallis chi-squared = 18.556, df = 15, p-value = 0.2345</code></pre>
 </div>
 </div>
+<p>Los resultados del test de Kruskal-Wallis también muestran un p-valor suficientemente superior a <span class="math inline">\(0.05\)</span>, lo que sugiere que no hay diferencias significativas entre los diferentes tipos de medicación y no tomar ninguna medicación.</p>
 </section>
-<section id="neteja-i-de-les-dades" class="level2">
-<h2 class="anchored" data-anchor-id="neteja-i-de-les-dades">Neteja i de les dades</h2>
-<p>El primer que feim és modificar els valors mencionats en l’apartat anterior.</p>
-<ol type="1">
-<li>Cambiamos los nombres de las columnas:</li>
-</ol>
+<section id="toma-medicación-vs-no-toma-medicación" class="level3">
+<h3 class="anchored" data-anchor-id="toma-medicación-vs-no-toma-medicación">Toma Medicación VS No Toma Medicación</h3>
+<p>Ahora lo que haremos serà semparar nuestra variable cualitativa (Medicamentos) en dos grupos: profesores que toman medicación y los que no.</p>
+<p>Entonces reducimos nuestro contraste de medias a dos medias en función de si toma o no toma. Entonces nuestras hipótesis quedan como:</p>
+<p><span class="math display">\[\begin{align}
+  &amp; H_0 = \{\mu_1 = \mu_0\} \\
+  &amp; H_1 = \{\mu_1 \ne \mu_0 \}
+\end{align}\]</span></p>
+<p>Donde <span class="math inline">\(\mu_0\)</span> representa la media del VHI para la población que no toma medicamentos y <span class="math inline">\(\mu_1\)</span> para los que si toman. Esto lo podriamos contrastar sí nuestras variables siguen una distribución normal.</p>
+<p>A continuación, se construye un gráfico de violín para visualizar la distribución de los valores de VHI en ambos grupos.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>CNam <span class="ot">=</span> <span class="fu">c</span>()</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">37</span>){</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   CNam <span class="ot">=</span> <span class="fu">c</span>(CNam, <span class="fu">paste0</span>(<span class="st">"col"</span>,<span class="fu">as.character</span>(i)))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> }</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data) <span class="ot">=</span> CNam</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ol start="2" type="1">
-<li>Cambiamos los valores de las columnas 28-37 (ambas incluidas)</li>
-</ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data),<span class="dv">10</span>), <span class="sc">~</span><span class="fu">case_when</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Mai'</span><span class="sc">~</span><span class="dv">0</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Gairebé mai'</span> <span class="sc">~</span><span class="dv">1</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'A vegades'</span><span class="sc">~</span><span class="dv">2</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Gairebé sempre'</span><span class="sc">~</span><span class="dv">3</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    .<span class="sc">==</span><span class="st">'Sempre'</span> <span class="sc">~</span><span class="dv">4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ol start="3" type="1">
-<li>Añadimos la columna SCORE:</li>
-</ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SCORE =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">tail</span>(<span class="fu">names</span>(data),<span class="dv">10</span>)),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="respondre-preguntes" class="level2">
-<h2 class="anchored" data-anchor-id="respondre-preguntes">Respondre preguntes</h2>
-<p>Per respondre les preguntes haurem d’analitzar les variables que ens interessin. Farem un primer anàlisis amb la pregunta número 25 (columna 25) la qual és: Pren alguna o algunes de les medicacions següents?</p>
-<p>Per facilitar el codi canviarem el valor de les posibles respostes:</p>
-<p>Al ser una pregunta de respuesta multiple separamos la variable en 11 variables según las posibles respuestas</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sub_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">select</span>(col1,col25,SCORE)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sub_data <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 3
-    col1 col25                                                             SCORE
-   &lt;dbl&gt; &lt;chr&gt;                                                             &lt;dbl&gt;
- 1     1 Aspirina i antiinflamatoris no esteroideus                            0
- 2     2 No                                                                    8
- 3     3 Vitamina C                                                            6
- 4     4 Antidepressius (fluoxetina i amitriptilina)                           8
- 5     5 Corticosteroides inhalats, Anticolinérgics (broncodilatadors, an…    27
- 6     6 No                                                                   15
- 7     7 No                                                                   14
- 8     8 No                                                                    4
- 9     9 No                                                                   10
-10    10 No                                                                    7</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practica_2_ad_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>Com podem observar per exemple en la resposta número 5 hi ha varies respostes separades per una coma, lo cual suposa un problema per a separar-les de manera eficient. Ho farem amb el següent codi:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cram un subdata amb la funcio str_count() </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sub_data2 <span class="ot">&lt;-</span> sub_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">No =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'No'</span>),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">CortIn =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'Corticosteroides inhalats'</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">AntD =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'Antidepresius'</span>),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">AntCol =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Anticolinérgics'</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">AspAntI =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Aspirina'</span>),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">IECA =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'IECA'</span>),</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Diur =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Diurètics'</span>),</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Clor =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Clorpromazina'</span>),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">LD =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25,<span class="at">pattern =</span> <span class="st">'L-Dopa'</span>),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Vitamina C'</span>),</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dan =</span> <span class="fu">str_count</span>(sub_data<span class="sc">$</span>col25, <span class="at">pattern =</span> <span class="st">'Danazol'</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">.before =</span> SCORE</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Llavors ara tenim la informació per poder fer el nostre estudi. No obstant no són les millors observacions per fer un anàlisis de com influeix cada medicament a la veu ja que hi ha observacions que estan influenciats per més d’un medicament.</p>
-<p>Per tant el primer anàlisis que podem fer és la diferència entre prendre algún medicament o cap.</p>
+<p>El gráfico de violín que ambas poblaciones siguen distribuciones similares, aunque existe una mayor dispersión en los valores de VHI para aquellos que consumen medicación. En particular, se observa que los casos con los valores más extremos (indicando una peor calidad de voz) pertenecen al grupo que toma medicación. Esto podría deberse al hecho de que los individuos que ya han experimentado problemas vocales recurren a medicación como medida correctiva y no preventiva.</p>
+<p>Antes de realizar el contraste mencionado contraste debemos realizar un test de normalidad de nuestros dos niveles: Si toma o No toma. Así, veamos si podemos generalizar el análisis anterior a toda la población. Lo que haremos es ver que a partir de los datos recopilados podemos obtener un resultado para toda la población.</p>
+<p>Realizamos un análisis de normalidad con el test de <strong>Shapiro-Wilk</strong> para determinar si la distribución de los datos en cada grupo es normal. Estos toman como hipótesis nula que nuestra variable de estudio siguen una distribución normal. También podemos observarlo con las gráficas cuantil-cuantil comparando con una normal.</p>
+<p>En la gráfica la recta roja es la recta <span class="math inline">\(y = x\)</span>, los puntos nos relacionan los cuantiles de nuestra muestra con los cuantiles de la normal. La región roja muestra el área donde si están nuestros puntos cuantil-cuantil podemos intuir que puedan seguir esa distribución.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat_si_no <span class="ot">&lt;-</span> sub_data3 <span class="sc">%&gt;%</span> <span class="fu">select</span>(No,SCORE)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(dat_si_no) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Pren_algun_medicament'</span>, <span class="st">'Qualitat'</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_si_no, <span class="fu">aes</span>(<span class="at">x =</span> Pren_algun_medicament,<span class="at">y=</span>Qualitat))<span class="sc">+</span><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>Pren_algun_medicament),<span class="at">width=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> Pren_algun_medicament), <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">show.legend =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">seed =</span> <span class="dv">0</span>))<span class="sc">+</span><span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">"No"</span>,<span class="st">"Si"</span>))<span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Medicaments"</span>, <span class="at">y =</span> <span class="st">"Qualitat de la veu"</span>)<span class="sc">+</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -250,55 +190,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-</div>
-<p>Podem observar que els dos boxplot es superposen i tenen mitja igual, a més de que tenim molt poques observacions a pren algun medicament (manco de 40):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(dat_si_no <span class="sc">%&gt;%</span> <span class="fu">select</span>(Pren_algun_medicament) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Pren_algun_medicament <span class="sc">==</span><span class="st">'Si'</span>) <span class="sc">%&gt;%</span> .<span class="sc">$</span>Pren_algun_medicament)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 39</code></pre>
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  no_medicacion$VHI
+W = 0.91542, p-value = 1.62e-07</code></pre>
 </div>
-</div>
-<p>Per curiositat podem observar quins SCORES tenim a cada medicament, perquè podriem pensar que algun medicament ens baixa la mitja. Cream un tibble on la primera variable es quin medicament pren i la segona el SCORE que té. Llavors aquí diferents observacions corresponen a un mateix individu.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dat_graf_2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Medicament =</span> <span class="fu">c</span>(),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Qualitat_veu =</span> <span class="fu">c</span>()</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>Nobres <span class="ot">&lt;-</span> sub_data3 <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">13</span>) <span class="sc">%&gt;%</span> <span class="fu">names</span>()</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> sub_data3[<span class="fu">c</span>(Nobres[i], <span class="st">'SCORE'</span>)]</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(D) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Medicament'</span>,<span class="st">'Qualitat_veu'</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">&lt;-</span> D <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Medicament <span class="sc">!=</span> <span class="st">'No'</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  dat_graf_2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dat_graf_2,D)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Graficam la mitjana del SCORE en funció del medicament que prèn:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_graf_2, <span class="fu">aes</span>(<span class="at">x =</span> Medicament,<span class="at">y=</span>Qualitat_veu))<span class="sc">+</span><span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color=</span>Medicament),<span class="at">width=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">color =</span> Medicament), <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">show.legend =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">seed =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practica_2_ad_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practica_2_ad_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  si_medicacion$VHI
+W = 0.83387, p-value = 3.738e-05</code></pre>
 </div>
-<p>Seria lògic demanar-se si podem inferir qualque cosa a partir d’aquest gràfic. És a dir, si un dels medicaments dona uns resultats més o menys elevats que la resta. Això ho podem fer amb un test de variàncies ANOVA:</p>
+</div>
+<p>El resultado del test nos ha dado un p-valor de <span class="math inline">\(1.62\times10^{-7}\)</span> para los no medicados y de <span class="math inline">\(3.738\times10^{-5}\)</span> pera los medicados. Como el p-valor es mucho menor que <span class="math inline">\(0.05\)</span> en ambos casos podemos decir que no siguen una distribución normal.</p>
+<p>Por tanto, haremos un test no paramétrico para determinar si siguen la misma distribución. En este caso aremos el <strong>test de Kruskal-Wallis</strong>:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>   Length     Class      Mode 
-       46 character character </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)
-Medicament   4  396.7   99.18   1.644  0.182
-Residuals   41 2473.4   60.33               </code></pre>
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  VHI by medicacion
+Kruskal-Wallis chi-squared = 0.17053, df = 1, p-value = 0.6796</code></pre>
 </div>
 </div>
-<p>Però, amb un p-valor de 0.182, tenim que no podem treure conclusions a partir d’aquí. ## Conclusions</p>
+<p>Los resultados del test de Wilcoxon no muestran diferencias significativas entre los dos grupos (p-valor <span class="math inline">\(&gt; 0.05\)</span>), sugiriendo que el consumo de medicación no está asociado con diferencias significativas en la calidad de la voz ya que siguen la misma distribución.</p>
+</section>
+<section id="conclusión" class="level3">
+<h3 class="anchored" data-anchor-id="conclusión">Conclusión</h3>
+<p>Los resultados de este estudio no muestran una asociación significativa entre el consumo de medicación y la calidad de la voz en profesores. Sin embargo, este resultado debe interpretarse con cautela, ya que la medicación podría estar siendo utilizada como una medida correctiva después de haber sufrido problemas vocales, en lugar de como una medida preventiva.</p>
+<p>Un análisis más profundo que incluya datos sobre la calidad de la voz antes y después del inicio del tratamiento con medicación sería necesario para obtener conclusiones más sólidas sobre su impacto real en la calidad vocal.</p>
+</section>
 </section>
 
 </main>
